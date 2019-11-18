@@ -8,7 +8,14 @@ bootstrap/compiled.php
 app/storage/
 
 # Laravel 5 & Lumen specific
-public/storage
+public/AdminLTE
+public/bootstrap
+public/fonts
+public/css
+public/js
+public/plugins
+public/uploads
+public/vendor
 public/hot
 
 # Laravel 5 & Lumen specific with changed public path
