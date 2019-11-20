@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone' , 'city_id' ,'office_id' , 'type'
+        'name', 'email', 'password', 'phone', 'city_id', 'office_id', 'user_type_id'
     ];
 
     /**
@@ -26,4 +26,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /** 
+     * Return user type
+     */
+    public function user_type()
+    {
+        return $this->hasOne(UsersType::class, 'id', 'user_type_id');
+    }
 }

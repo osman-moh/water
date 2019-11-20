@@ -13,7 +13,7 @@
                 <a href="{{route('reports.index')}}" id="tour_step4_menu"><i class="fa fa-fw fa-cube"></i> <span>البلاغات</span>
                 </a>
             </li>
-            @if (auth()->user()->type == 1)
+            @if (auth()->user()->user_type_id == 1)
             <li  id="tour_step4">
               <a href="{{route('locations.index')}}" id="tour_step4_menu"><i class="fa fa-fw fa-cube"></i> <span>
                 مواقع البلاغلات
