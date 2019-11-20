@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     //
-    protected $table = "reports";
+    //protected $table = "reports";
 
     public function city()
     {
@@ -31,24 +31,24 @@ class Report extends Model
     }
     public function status()
     {
-        return $this->hasOne(ReportStatus::class, 'id', 'report_status');
+        return $this->hasOne(ReportStatus::class, 'id', 'report_status_id');
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'reporter_type');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /** @test */
     public function type()
     {
-        return $this->belongsTo(ReportType::class, 'report_type');
+        return $this->belongsTo(ReportType::class, 'report_type_id');
     }
 
     /** @test */
     public function sub_type()
     {
-        return $this->belongsTo(ReportSubType::class, 'report_sub_type');
+        return $this->belongsTo(ReportSubType::class, 'report_sub_type_id');
     }
 
     /** @test */
@@ -60,12 +60,12 @@ class Report extends Model
     /** @test */
     public function location()
     {
-        return $this->belongsTo(Location::class, 'location');
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     /** @test */
     public function sub_report_detail()
     {
-        return $this->belongsTo(ReportSubDetail::class, 'report_detail');
+        return $this->belongsTo(ReportSubDetail::class, 'report_sub_detail_id');
     }
 }
