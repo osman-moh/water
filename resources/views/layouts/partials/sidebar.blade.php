@@ -71,9 +71,9 @@
                 <li class="treeview">
                     <a href="#"><i class="fa fa-dashboard"></i><span>التقارير</span></a>
                     <ul class="treeview-menu">
-                      <li class="treeview"><a href="{{ route('reports.index') }}"><i class="fa fa-bar-chart"></i><span>التقارير العامة</span></a></li>
-                      <li class="treeview"><a href="{{ route('reports.index') }}"><i class="fa fa-file-o"></i><span>إنشاء تقرير</span></a></li>
-                      <li class="treeview"><a href="{{ route('reports.index') }}"><i class="fa fa-circle-o"></i><span>تقارير GIS</span></a></li>
+                      <li class="treeview"><a href="{{ route('water-reports.index') }}"><i class="fa fa-bar-chart"></i><span>التقارير العامة</span></a></li>
+                      <li class="treeview"><a href="{{ route('water-reports.create') }}"><i class="fa fa-file-o"></i><span>إنشاء تقرير</span></a></li>
+                      {{-- <li class="treeview"><a href="{{ route('water-reports.gis') }}"><i class="fa fa-circle-o"></i><span>تقارير GIS</span></a></li> --}}
                     </ul>
                 </li>
             

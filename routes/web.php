@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -61,6 +62,16 @@ Route::resource('report_sub_types', 'ReportSubTypeController')->middleware('auth
 
 Route::resource('report_sub_details', 'ReportSubDetailController')->middleware('auth');
 
+//Water reports routes
+Route::prefix('water-reports')->name('water-reports.')->group(function () {
+
+    Route::get('/', 'WaterReportsController@index')->name('index');
+
+    Route::get('/create', 'WaterReportsController@create')->name('create');
+
+    Route::post('/generate', 'WaterReportsController@generateReport')->name('generate');
+});
+
 
 //Ajax requests
 Route::get('city-localities-list/{id}', 'citiesController@getLocalities');
@@ -76,6 +87,8 @@ Route::get('report-subtype-list/{id}', 'ReportTypeController@getReportSubType');
 Route::get('report-sub-detail-list/{id}', 'ReportSubDetailController@getReportSubDetail');
 
 Route::get('city-offices-list/{id}', 'UserController@getOffices');
+
+Route::get('summary-report-by', 'WaterReportsController@generateSumReport');
 
 // update Report status (sending SMS):
 
