@@ -57,6 +57,11 @@ class Report extends Model
         return $this->belongsTo(User::class, 'createby');
     }
 
+    public function updateByUser()
+    {
+        return $this->belongsTo(User::class, 'updateby');
+    }
+
     /** @test */
     public function location()
     {

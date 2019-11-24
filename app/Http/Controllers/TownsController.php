@@ -7,7 +7,7 @@ use App\Town;
 use Illuminate\Http\Request;
 use App\Locality;
 use App\Office;
-
+use Yajra\DataTables\Facades\DataTables;
 class TownsController extends Controller
 {
     //
@@ -25,6 +25,12 @@ class TownsController extends Controller
             ->paginate(10);
         //return $data ;
         return view('towns.index')->with('data', $data);
+    }
+
+    public function getTowns()
+    {
+      return Datatables::of(Town::query()->with(['city','locality','office']))->make(true);
+
     }
 
     /**
@@ -69,9 +75,15 @@ class TownsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Town $town)
     {
         //
+        // $report = Report::findOrFail($id);
+        
+       // if ($town->city_id != Auth::user()->city_id && Auth::user()->type != 1) {
+       //     abort(403);
+       // }
+        return view('towns.show', ['town'=>$town]);
     }
 
     /**
