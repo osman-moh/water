@@ -69,9 +69,10 @@ class ReportsController extends Controller
             ->with('locations', $locations)
             ->with('towns', $towns)
             ->with('categories', $categories)
+            
             ->with('types', $types);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -81,12 +82,13 @@ class ReportsController extends Controller
     public function store(Request $request)
     {
         $save = new Report();
-        $save->location     = $request->location;
+        $save->location_id     = $request->location;
         $save->date         = $request->date;
         $save->name         = $request->name;
         $save->phone1       = $request->phone1;
-       
-        $save->reporter_type= $request->reporter_type;
+        
+        $save->report_action_description= $request->report_action_description;
+        $save->category_id= $request->reporter_type;
         $save->manager_name = $request->manager_name;
         $save->manager_phone= $request->manager_phone;
         $save->city_id      = $request->city_id;
@@ -96,11 +98,11 @@ class ReportsController extends Controller
         $save->square_id    = $request->square_id;
         $save->house_number = $request->house_number;
         $save->house_description    = $request->house_description;
-        $save->report_type          = $request->report_type;
-        $save->report_sub_type      = $request->report_sub_type ;
-        $save->report_detail  = $request->report_detail;
+        $save->report_type_id          = $request->report_type;
+        $save->report_sub_type_id      = $request->report_sub_type ;
+        $save->report_sub_detail_id  = $request->report_detail;
         $save->createby       = Auth::id();
-        $save->report_status  = $this->initial_report_status ;
+        $save->report_status_id  = $this->initial_report_status ;
        
         $save->save();
         
@@ -130,6 +132,7 @@ class ReportsController extends Controller
         
         if ($report->city_id != Auth::user()->city_id && Auth::user()->type != 1) {
             abort(403);
+            
         }
         return view('reports.show', ['report'=>$report]);
     }
@@ -154,8 +157,8 @@ class ReportsController extends Controller
         //$towns      =  Town::where('office_id', $report->office_id)->get() ;
         //$squares    = Square::where('town_id', $report->town_id)->get();
         $types      = ReportType::all();
-        $sub_types  = ReportSubType::where('report_type_id', $report->report_type)->get();
-        $sub_detail = ReportSubDetail::where('report_sub_type_id', $report->report_sub_type)->get();
+        $sub_types  = ReportSubType::where('report_type_id', $report->report_type_id)->get();
+        $sub_detail = ReportSubDetail::where('report_sub_type_id', $report->report_sub_type_id)->get();
         
         return view("reports.edit")
             ->with('report', $report)
@@ -164,9 +167,10 @@ class ReportsController extends Controller
             ->with('towns', $towns)
             ->with('types', $types)
             ->with('report_sub_types', $sub_types)
+          //  ->with('report_action_description', $report_action_description)
             ->with('report_sub_details', $sub_detail);
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -179,11 +183,11 @@ class ReportsController extends Controller
         // return $request->all();
         $data               = Report::find($id);
        // return $data;
-        $data->location     = isset($request->location) ? $request->location : $data->location;
+        $data->location_id     = isset($request->location) ? $request->location : $data->location;
         $data->date         = isset($request->date) ? $request->date : $data->date;
         $data->phone1       = isset($request->phone1) ? $request->phone1 : $data->phone1;
         $data->name         =isset($request->name)?$request->name:$data->name;
-        $data->reporter_type= isset($request->reporter_type) ? $request->reporter_type : $data->reporter_type;
+        $data->category_id  = isset($request->reporter_type) ? $request->reporter_type : $data->reporter_type;
         $data->manager_name = isset($request->manager_name) ? $request->manager_name : $data->manager_name;
         $data->manager_phone= isset($request->manager_phone) ? $request->manager_phone : $data->manager_phone;
         $data->city_id      = isset($request->city_id) ? $request->city_id : $data->city_id;
@@ -192,14 +196,16 @@ class ReportsController extends Controller
         $data->town_id      = isset($request->town_id) ? $request->town_id : $data->town_id;
         $data->square_id    = isset($request->square_id) ? $request->square_id : $data->square_id;
         $data->house_number         =isset($request->house_number)?$request->house_number:$data->house_number;
-       // $data->house_number = isset($request->House_number) ? $request->House_number : $data->house_number;
+        $data->report_action_description         =isset($request->report_action_description)?$request->report_action_description:$data->report_action_description;
+
+          // $data->house_number = isset($request->House_number) ? $request->House_number : $data->house_number;
         $data->house_description = isset($request->house_description) ? $request->house_description : $data->house_description;
-        $data->report_type  = isset($request->report_type) ? $request->report_type : $data->report_type;
-        $data->report_detail= isset($request->report_detail) ? $request->report_detail : $data->report_detail;
-        $data->report_sub_type	= isset($request->report_sub_type) ? $request->report_sub_type : $data->report_sub_type;
+        $data->report_type_id  = isset($request->report_type_id) ? $request->report_type_id : $data->report_type_id;
+        $data->report_sub_detail_id= isset($request->report_detail) ? $request->report_detail : $data->report_detail;
+        $data->report_sub_type_id	= isset($request->report_sub_type) ? $request->report_sub_type : $data->report_sub_type;
         $data->updateby = Auth::id();
-        $data->createby = Auth::id();
-        $data->report_status = isset($request->report_status) ? $request->report_status : $data->report_status;
+        //$data->createby = Auth::id();
+        $data->report_status_id = isset($request->report_status) ? $request->report_status : $data->report_status_id;
 
         $data->save();
         $request->session()->flash('status', 'تم التعديل بنجاح!');
@@ -249,7 +255,7 @@ class ReportsController extends Controller
     {
         $report = Report::findOrFail($id) ;
 
-        $report->report_status = request('report_status') ;
+        $report->report_status_id = request('report_status') ;
         $report->save();
         $message = 'تم تعديل حالة البلاغ بنجاح';
         $delivered = '';

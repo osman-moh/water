@@ -1,247 +1,361 @@
  
     @extends('layouts.app')
-	@section('title' , 'تفاصيل بلاغ')
+	
+    @section('title' , 'تفاصيل بلاغ')
+    
     @section('content')
-        <div class="box box-default">
-
-            <div class="box-header with-border">
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
-                </div>
-            </div>
-                    <!-- /.box-header -->
-                    
-            <div class="box-body">
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>بيانات البلاغ</h2>
-                        </div>
+        
+    <div class="container"> 
+	
+        <div class="row"><br></div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">بيانات البلاغ</h4>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-2"><h5><strong>مكان استقبال البلاغ</strong></h5></div>
-                        <div class="col-md-3">
-                            <h5>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                            <h4><strong>مكان استقبال البلاغ </strong> <i> : 
                                 @isset( $report->location->name ) 
-                                 {{ $report->location->name }}
+                                {{ $report->location->name }}
                                 @endisset
-                                الخرطوم
-                            </h5>
-                        </div>
-                        <div class="col-md-2"><h5><strong>تاريخ استقبال البلاغ</strong></h5></div>
-                        <div class="col-md-3">
-                            <h5>
-                                    @isset( $report->date )
+                                </i>
+                            </h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4><strong>تاريخ البلاغ </strong> <i> : 
+                                @isset( $report->date )
                                     {{ $report->date }}
-                                   @endisset
-                            </h5>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-2"><h5><strong>نوع الجهة المبلغة</strong></h5></div>
-                        <div class="col-md-1">
-                            <h5>
+                                @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4><strong>الجهة المبلغة </strong> <i> : 
                                 @isset($report->category->name )
                                     {{ $report->category->name }}
                                 @endisset
-                            </h5>
+                                    </i>
+                                </h4>
+                            </div>
                         </div>
-
-                        <div class="col-md-1"><h5><strong>اسم المبلغ</strong></h5></div>
-                        <div class="col-md-2">
-                            <h5>
-                            
-                            @isset( $report->name )
-                            {{ $report->name }}
-                           @endisset
-                            </h5>
-                        </div>
-
-                        <div class="col-md-1"><h5><strong>رقم الهاتف</strong></h5></div>
-                        <div class="col-md-2">
-                            <h5>
+                    </div>
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">بيانات المبلغ</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                            <h4><strong>اسم المبلغ</strong> <i> : 
+                                @isset( $report->name ) 
+                                {{ $report->name }}
+                                @endisset
+                                </i>
+                            </h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4><strong>رقم الهاتف </strong> <i> : 
                                     @isset( $report->phone1 )
-                                    {{ $report->phone1 }}
-                                   @endisset
-                            </h5>
-
+                                        {{ $report->phone1 }}
+                                    @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-4">
+                                
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-2"><h5><strong>المنطقة الكبرى</strong></h5></div>
-                        <div class="col-md-1">
-                            <h5>
-                                @isset( $report->city->name )
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">مكان البلاغ</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                            <h4><strong>المنطقة الكبرى</strong> <i> : 
+                                @isset( $report->city->name ) 
                                 {{ $report->city->name }}
-                               @endisset
-                            </h5>
-                        </div>
-
-                        <div class="col-md-1"><h5><strong>المحلية</strong></h5></div>
-                        <div class="col-md-2"><h5>
-                           
-                            @isset( $report->locality->name )
-                            {{ $report->locality->name }}
-                           @endisset
-                            </h5></div>
-
-                        <div class="col-md-1"><h5><strong>المكتب</strong></h5></div>
-                        <div class="col-md-2"><h5>
-                           
-                            @isset( $report->office->name )
-                            {{ $report->office->name }}
-                           @endisset
-                        </h5></div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                            <div class="col-md-1"><h5><strong>المدينة</strong></h5></div>
-                            <div class="col-md-2"><h5>
-                               
+                                @endisset
+                                </i>
+                            </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>المحلية</strong> <i> : 
+                                @isset( $report->locality->name )
+                                {{ $report->locality->name }}
+                            @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>المكتب</strong> <i> : 
+                                @isset( $report->office->name )
+                                    {{ $report->office->name }}
+                                @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <h4><strong>المدينة</strong> <i> : 
                                 @isset( $report->town->name )
-                                {{ $report->town->name }}
-                               @endisset
-                            </h5></div>
-
-                            <div class="col-md-1"><h5><strong>المربع</strong></h5></div>
-                            <div class="col-md-2"><h5>
-                                    @isset( $report->square->name )
-                                    {{ $report->square->name }}
-                                   @endisset
-                                </h5></div>
-
-                            <div class="col-md-1"><h5><strong>رقم المنزل</strong></h5></div>
-                            <div class="col-md-2"><h5>
-                                    @isset( $report->house_number )
-                                    {{ $report->house_number }}
-                                   @endisset
-                                </h5></div>
+                                    {{ $report->town->name }}
+                                @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                        </div>
                     </div>
-                    <hr> 
-                    <div class="row">
-                        <div class="col-md-2"><h5><strong>وصف المنزل</strong></h5></div>
-                        <div class="col-md-4"><h5>
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">وصف المنزل</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                            <h4><strong>المربع</strong> <i> : 
+                                @isset( $report->square->name ) 
+                                {{ $report->square->name }}
+                                @endisset
+                                </i>
+                            </h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4><strong>رقم المنزل</strong> <i> : 
+                                @isset( $report->house_number )
+                                    {{ $report->house_number }}
+                                @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h4><strong>وصف المنزل</strong> <i> : 
                                 @isset( $report->house_description )
                                 {{ $report->house_description }}
-                               @endisset
-                            </h5>
+                            @endisset
+                                    </i>
+                                </h4>
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                            <div class="col-md-2"><h5><strong>مدير الصيانة</strong></h5></div>
-                            <div class="col-md-4"><h5>
-                                    @isset( $report->manager_name )
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">بيانات مدير مكتب الصيانة</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                            <h4><strong>مدير الصيانة</strong> <i> : 
+                                @isset( $report->manager_name )
                                         {{ $report->manager_name }}
                                     @endisset
-                                </h5>
+                                </i>
+                            </h4>
                             </div>
-                            <div class="col-md-2"><h5><strong>رقم الهاتف</strong></h5></div>
-                            <div class="col-md-4"><h5>
-                                    @isset( $report->manager_phone )
+                            <div class="col-md-4">
+                                <h4><strong>رقم الهاتف</strong> <i> : 
+                                @isset( $report->manager_phone )
                                     {{ $report->manager_phone }}
                                 @endisset
-                                </h5>
+                                    </i>
+                                </h4>
                             </div>
+                            <div class="col-md-4">
                             
+                            </div>
                         </div>
-                        <hr>
-                    <div class="row">
-                        <div class="col-md-1"><h5><strong>نوع البلاغ </strong></h5></div>
-                        <div class="col-md-2"><h5>
+                    </div>
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">تفاصيل البلاغ</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                            <h4><strong>نوع البلاغ</strong> <i> : 
                                 @isset( $report->type->name )
                                 {{ $report->type->name }}
-                               @endisset
-                            </h5></div>
-                        <div class="col-md-1"><h5><strong>البند الفرعي </strong></h5></div>
-                        <div class="col-md-2">
-                            <h5>
+                            @endisset
+                                </i>
+                            </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>البند الفرعي</strong> <i> : 
                                 {{ empty($report->sub_type->name) ? '' : $report->sub_type->name }}
-                            </h5>
-                        </div>
-                        <div class="col-md-2"><h5><strong>تفصيل البلاغ </strong></h5></div>
-                        <div class="col-md-3">
-                            <h5>
-                                {{ empty($report->sub_report_detail->name) ? '' : $report->sub_report_detail->name }}
-                            </h5>
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>تفصيل البلاغ</strong> <i> : 
+                                    {{ empty($report->sub_report_detail->name) ? '' : $report->sub_report_detail->name }}
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>حالة البلاغ </strong> <i> : 
+                                    {{ empty($report->status->name)?'': $report->status->name }}
+                                    </i>
+                                </h4>
+                            </div>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                            <div class="col-md-1"><h5><strong>حالة البلاغ </strong></h5></div>
-                            <div class="col-md-2"><h5>{{ empty($report->status->name)?'': $report->status->name }}</h5></div>
-
-                            <div class="col-md-2"><h5><strong> تم استلام البلاغ بواسطة </strong></h5></div>
-                            <div class="col-md-2">
-                                <h5>
-                                @isset( $report->user->name )
-                                    {{ $report->user->name }}
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">بيانات البلاغ</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h4><strong>تم استلام البلاغ بواسطة</strong> <i> : 
+                                    @isset( $report->user->name )
+                                        {{ $report->user->name }}
+                                    @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>تاريخ البلاغ</strong> <i> : 
+                                @isset( $report->created_at )
+                                    {{ $report->created_at }}
                                 @endisset
-                               </h5>
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>تم تعديل البلاغ بواسطة</strong> <i> : 
+                                    @isset( $report->updateByUser->name )
+                                        {{ $report->updateByUser->name }}
+                                    @endisset
+                                    </i>
+                                </h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h4><strong>تاريخ التعديل</strong> <i> : 
+                                @isset( $report->updated_at )
+                                    {{ $report->updated_at }}
+                                @endisset
+                                    </i>
+                                </h4>
                             </div>
 
-                            <div class="col-md-1"><h5><strong>تاريخ البلاغ </strong></h5></div>
-                            <div class="col-md-2"><h5>
-                                    @isset( $report->created_at )
-                                    {{ $report->created_at }}
-                                   @endisset
-                                </h5></div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        @if (auth()->user()->type != 3)
-                            
-                        <form action="/reports/update-status/{{ $report->id }}" method="post">
-                            @method('PATCH')
-                            @csrf
-                            
-                            <div class="row">
-                                <div class="col-md-2"><label for="">تعديل حالة البلاغ</label></div>
-                                <div class="col-md-2">
-                                    <input type="radio" name="report_status" value="1" {{ ($report->report_status == 1)? 'checked' :''}}>&nbsp;&nbsp; غير منجز
-                                </div>
-                                <div class="col-md-1">
-                                    <input type="radio" name="report_status" value="2" {{ ($report->report_status == 2)? 'checked' :''}}>&nbsp;&nbsp;منجز
-                                </div>
-                                <div class="col-md-1">
-                                    <input type="radio" name="report_status" value="3" {{ ($report->report_status == 3)? 'checked' :''}}>&nbsp;&nbsp;معلق
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="radio" name="report_status" value="4" {{ ($report->report_status == 4)? 'checked' :''}}>&nbsp;&nbsp;قيد التنفيذ
-                                </div>
-                                <div class="col-md-3"> 
-                                    <button type="submit" class="btn btn-success btn-block">تعديل الحالة</button>
-                                 </div>
-                            </div><hr>
-                        </form>
-                        @endif
-                        @if (auth()->user()->type == 1)
-                            
-                            <form action="/reports/{{ $report->id }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <div class="row">
-                                    <div class="col-md-12"><br><br></div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-3">
-                                        <a href="/reports/{{ $report->id }}/edit" class="btn btn-primary btn-block">تعديل البلاغ</a>
-                                    </div>
-                                    
-                                    <div class="col-md-3">
-                                        <button class="btn btn-danger btn-block" type="submit">حذف البلاغ</button>
-                                    </div>
-                                    <div class="col-md-3"></div>
-                                </div><hr>
-                            </form>
-                        @endif
-                    </div>
-                </div>
+                            <div class="col-md-6">
+                                <h4><strong>وصف ما تم عمله في البلاغ</strong> <i> : 
+                                @isset( $report->report_action_description )
+                                    {{ $report->report_action_description }}
+                                @endisset
+                                    </i>
+                                </h4>
+                            </div>
 
-            </div>
-        </div>
+                        </div>
+                    </div>
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+        
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">تعديل حالة البلاغ</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            @if (auth()->user()->user_type_id != 3)
+                                <form action="/reports/update-status/{{ $report->id }}" method="post">
+                                    @method('PATCH')
+                                    @csrf
+                                    
+                                    <!-- <div class="row"> -->
+                                        <div class="col-md-2">
+                                            <input type="radio" name="report_status" value="1" {{ ($report->report_status == 1)? 'checked' :''}}>&nbsp;&nbsp; غير منجز
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" name="report_status" value="2" {{ ($report->report_status == 2)? 'checked' :''}}>&nbsp;&nbsp;منجز
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" name="report_status" value="3" {{ ($report->report_status == 3)? 'checked' :''}}>&nbsp;&nbsp;معلق
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" name="report_status" value="4" {{ ($report->report_status == 4)? 'checked' :''}}>&nbsp;&nbsp;قيد التنفيذ
+                                        </div>
+                                        <div class="col-md-3"> 
+                                            <button type="submit" class="btn btn-success btn-block">تعديل الحالة</button>
+                                        </div>
+                                    <!-- </div><hr> -->
+                                    <hr>
+                                </form>
+                            @endif
+                            @if (auth()->user()->user_type_id == 1)
+                                
+                                <form action="/reports/{{ $report->id }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="row">
+                                        <div class="col-md-12"><br><br></div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-3">
+                                            <a href="/reports/{{ $report->id }}/edit" class="btn btn-primary btn-block">تعديل البلاغ</a>
+                                        </div>
+                                        
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger btn-block" type="submit">حذف البلاغ</button>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                    </div><hr>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                </div> <!-- ./box -->
+            </div> <!-- ./col-md-12 -->
+        </div><!-- ./row -->
+
+</div><!-- ./container -->
+
+
     @endsection

@@ -38,7 +38,7 @@ Route::post('/regionaltable', 'LocalitiesController@index')->middleware('auth')-
 
 Route::resource('towns', 'TownsController')->middleware('auth');
 Route::post('/Citytable', 'TownsController@index')->middleware('auth')->name('Citytable');
-
+Route::get('towns-all', 'TownsController@getTowns')->middleware('auth');
 Route::resource('squares', 'SquaresController')->middleware('auth');
 Route::post('/Squaretable', 'SquaresController@index')->middleware('auth')->name('Squaretable');
 

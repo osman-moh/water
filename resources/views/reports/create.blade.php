@@ -34,8 +34,8 @@
                         oninput="this.setCustomValidity('')" >
 
                             <option value="{{null}}"> اختر</option>
-                            @foreach ($locations as $location)
-                                <option value="{{$location->id}}"> {{$location->name}}</option>
+                            @foreach ($locations as $location_id)
+                                <option value="{{$location_id->id}}"> {{$location_id->name}}</option>
                             @endforeach
 
                         </select>
@@ -191,6 +191,10 @@
                         <select name="report_detail" id="report_detail" class="form-control" required
 								   oninvalid="this.setCustomValidity('عفوا ! الرجاء اختر تفاصيل نوع البلاغ  ')"
 								   oninput="this.setCustomValidity('')"></select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for=""> وصف ما تم عمله في البلاغ	</label>
+                        <textarea name="report_action_description" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب"></textarea>
                     </div>
 
                 </div>

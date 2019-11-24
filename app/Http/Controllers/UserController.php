@@ -56,7 +56,7 @@ class UserController extends Controller
             'phone'     => $request->phone ,
             'city_id'   => $request->city_id ,
             'office_id' => $request->office_id ,
-            'type'      => $request->type,
+            'user_type_id'      => $request->user_type_id,
             'password'  => bcrypt($request->password)
         ]);
         return redirect()->route('user.index');
@@ -85,13 +85,13 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed',
-            'type' => 'required'
+            'user_type_id' => 'required'
         ]);
         
         $user->name     = $request->name;
         $user->email    =  $request->email;
         $user->password = bcrypt($request->password);
-        $user->type     = $request->type;
+        $user->user_type_id     = $request->user_type_id;
         $user->phone  = empty($request->phone) ? '' : $request->phone ;
         
         $user->city_id  = empty($request->city_id) ? 0 : $request->city_id ;

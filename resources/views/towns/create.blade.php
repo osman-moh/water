@@ -62,7 +62,12 @@
                          <div class="col-lg-12">
                              <div class="col-lg-6">
                                  <label for="">المكتب الفرعي</label>
-                                 <select name="office_id" class="form-control" id="office_id"></select>
+                                 <select name="office_id" class="form-control" id="office_id" 
+                                 required  
+                                         oninvalid="this.setCustomValidity('عفوا ! الرجاء اختر اسم المكتب  ')"
+                                         oninput="this.setCustomValidity('')"
+                                 >
+                                 </select>
                              </div>
                              <div class="col-lg-6">
                                  
