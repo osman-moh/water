@@ -67,7 +67,11 @@
                      <div class="col-lg-12">
                          <div class="col-lg-6">
                              <label for="">المكتب الفرعي</label>
-                             <select name="office_id" class="form-control" id="office_id">
+                             <select name="office_id" class="form-control" id="office_id" 
+                             required  
+                                         oninvalid="this.setCustomValidity('عفوا ! الرجاء اختر اسم المكتب  ')"
+                                         oninput="this.setCustomValidity('')"
+                             >
                                      @foreach ($offices as $office)
                                      <option value="{{ $office->id }}" {{ $town->office_id==$office->id?'selected':'' }}>
                                          {{ $office->name }}

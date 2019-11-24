@@ -76,10 +76,10 @@
                                 <div class="form-group">
                                     <label for="password-confirm" class="col-md-4 control-label">نوع المستخدم   </label>
                                     <div class="col-md-6">
-                                        <select name="type"  class="form-control" >
-                                            @foreach ($types as $type)
-                                                <option value="{{ $type->id }}" {{ ($type->id==$user->type)?'selected' :'' }}>
-                                                    {{ $type->name }}
+                                        <select name="user_type_id"  class="form-control" >
+                                            @foreach ($types as $user_type_id)
+                                                <option value="{{ $user_type_id->id }}" {{ ($user_type_id->id==$user->user_type_id)?'selected' :'' }}>
+                                                    {{ $user_type_id->name }}
                                                 </option>
                                             @endforeach
                                         </select>

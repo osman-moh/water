@@ -33,16 +33,14 @@
                             <div class="col-md-3">
                                 <label> مكان استقبال  البلاغ : </label>
                                 <select class="form-control" name="location" required 
-                                oninvalid="this.setCustomValidity('عفوا ! الرجاء اختر مكان استقبال  البلاغ')" 
-                                oninput="this.setCustomValidity('')" >
-        
+                                    oninvalid="this.setCustomValidity('عفوا ! الرجاء اختر مكان استقبال  البلاغ')" 
+                                    oninput="this.setCustomValidity('')" >
                                     <option value="{{null}}"> اختر</option>
-                                    @foreach ($locations as $location)
-                                        <option value="{{$location->id}}" {{ $report->location==$location->id ?'selected' :'' }}> 
-                                            {{$location->name}}
+                                    @foreach ($locations as $location_id)
+                                        <option value="{{$location_id->id}}" {{ $report->location_id == $location_id->id ? 'selected' : ''}} > 
+                                            {{$location_id->name}}
                                         </option>
                                     @endforeach
-        
                                 </select>
                             </div>
         
@@ -59,7 +57,7 @@
                                     
                                     <option value="{{null}}"> اختر</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{$category->id}}" {{ $report->reporter_type==$category->id ?'selected' :'' }}> 
+                                        <option value="{{$category->id}}" {{ $report->category_id == $category->id ? 'selected' : '' }}> 
                                             {{$category->name}}
                                         </option>
                                     @endforeach
@@ -178,7 +176,7 @@
                                 <select name="report_type" id="report_type" class="form-control">
                                     <option value="{{ null }}"></option>
                                     @foreach ($types as $type)
-                                        <option value="{{ $type->id }}" {{ $report->report_type==$type->id?'selected' : '' }}>
+                                        <option value="{{ $type->id }}" {{ $report->report_type_id == $type->id ? 'selected' : '' }}>
                                             {{ $type->name }}
                                         </option>
                                     @endforeach
@@ -189,7 +187,7 @@
                                 <label for="">البند الفرعي</label>
                                 <select name="report_sub_type" id="report_sub_type" class="form-control">
                                     @foreach ($report_sub_types as $sub_type)
-                                        <option value="{{ $sub_type->id }}" {{ $report->report_sub_type==$sub_type->id ? 'selected' : '' }}>
+                                        <option value="{{ $sub_type->id }}" {{ $report->report_sub_type_id == $sub_type->id ? 'selected' : '' }}>
                                             {{ $sub_type->name }}
                                         </option>
                                     @endforeach
@@ -201,14 +199,21 @@
                                 <select name="report_detail" id="report_detail" class="form-control">
                                     <option value=""></option>
                                    @foreach ($report_sub_details as $sub_detail)
-                                       <option value="{{ $sub_detail->id }}" {{ $report->report_detail==$sub_detail->id ? 'selected' : ''}}>
+                                       <option value="{{ $sub_detail->id }}" {{ $report->report_sub_detail_id == $sub_detail->id ? 'selected' : ''}} >
                                             {{ $sub_detail->name }}
                                        </option>
                                    @endforeach
                                 </select>
                             </div>
-        
-                        </div>
+                       
+
+                        <div class="col-md-6">
+                        <label for=""> وصف ما تم عمله في البلاغ	</label>
+                                <textarea name="report_action_description" id="" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب">
+                                    {{ $report->report_action_description }}
+                                </textarea>
+                            </div>
+
                         <hr>
                         <div class="row">
                             <div class="text-center">
