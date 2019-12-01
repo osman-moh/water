@@ -100,7 +100,7 @@
                     </div>
                 
                 <div class="box-body table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="reportsTable">
                         <thead>
                             <th>#</th>
                             <th>رقم البلاغ</th>
@@ -119,15 +119,15 @@
                                 <tr>
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td>{{ $report->id }}</td>
-                                    <td>{{ $report->name }}</td>
-                                    <td>{{ $report->town->name }}</td>
-                                    <td>{{ $report->square->name }}</td>
+                                    <td>{{ !empty($report->name) ?$report->name : '' }}</td>
+                                    <td>{{ !empty($report->town->name) ? $report->town->name : '' }}</td>
+                                    <td>{{ !empty($report->square->name) ? $report->square->name : '' }}</td>
                                     <td>{{ ($report->house_number > 0) ? $report->house_number : '' }}</td>
-                                    <td>{{ $report->date }}</td>
+                                    <td>{{ !empty($report->date) ? $report->date : '' }}</td>
                                     <td></td>
-                                    <td>{{ $report->type->name }}</td>
-                                    <td>{{ $report->sub_type->name }}</td>
-                                    <td>{{ $report->status->name }}</td>
+                                    <td>{{ !empty($report->type->name) ? $report->type->name : '' }}</td>
+                                    <td>{{ !empty($report->sub_type->name) ? $report->sub_type->name : '' }}</td>
+                                    <td>{{ !empty($report->status->name) ? $report->status->name : '' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -148,7 +148,12 @@
         <script>
 
             $(document).ready(function(){
-
+                $('#reportsTable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'excel'
+                    ]
+                });
             });
 
         </script>
