@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Locality;
 use App\Office;
 use App\Town;
-
+use Yajra\DataTables\Facades\DataTables;
 class SquaresController extends Controller
 {
     //
@@ -68,9 +68,21 @@ class SquaresController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Square $square)
     {
         //
+        // $report = Report::findOrFail($id);
+        
+       // if ($town->city_id != Auth::user()->city_id && Auth::user()->type != 1) {
+       //     abort(403);
+       // }
+        return view('squares.show', ['square'=>$square]);
+    }
+
+    public function getSquares()
+    {
+      return  Datatables::of(Square::query()->with(['city','locality','office','town']))->make(true);
+
     }
 
     /**

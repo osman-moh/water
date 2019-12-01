@@ -173,7 +173,7 @@
                     },
 
 
-                ]
+                               ]
             });*/
 			
 			$('.delete').click(function(){

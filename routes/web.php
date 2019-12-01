@@ -41,6 +41,7 @@ Route::post('/Citytable', 'TownsController@index')->middleware('auth')->name('Ci
 Route::get('towns-all', 'TownsController@getTowns')->middleware('auth');
 Route::resource('squares', 'SquaresController')->middleware('auth');
 Route::post('/Squaretable', 'SquaresController@index')->middleware('auth')->name('Squaretable');
+Route::get('squares-all', 'SquaresController@getSquares')->middleware('auth');
 
 Route::resource('offices', 'OfficesController')->middleware('auth');
 Route::post('/Subofficestable', 'OfficesController@index')->middleware('auth')->name('Subofficestable');

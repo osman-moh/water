@@ -31,15 +31,17 @@
                         <div class="panel-heading"><h5>   المستخدمين  </h5> </div>
                         <div class="panel-body">
                             <table class="table table-bordered table-responsive text-center" dir="rtl">
+                            <thead>
                                 <tr>
                                     <th class="text-center"><input type="checkbox" class="flat-red" id="checkall" ></th>
                                     <th class="text-center">الترقيم</th>
                                     <th class="text-center"> الاسم</th>
                                     <th class="text-center"> البريد </th>
-
                                     <th class="text-center" colspan="3"> الاجراء</th>
                                 </tr>
-                                    @foreach($data as $key=>$value)
+                            </thead>
+                            <tbody>
+                                @foreach($data as $key => $value)
                                     <tr>
                                         <td>
                                             <input type="checkbox" class="flat-red"  name="studantid" value="{{$value->id}}" >
@@ -47,7 +49,6 @@
                                         <td>{{$loop->iteration}}</td>
                                         <td>{{$value->name}}</td>
                                         <td>{{$value->email}}</td>
-
                                         <td>
                                             <a href="{{route('user.edit',$value->id)}}" class="btn btn-success" value="{{$value->id}}">
                                                 <i class="fa fa-fw fa-edit"></i>تعديل
@@ -65,9 +66,9 @@
                                         <td>
 
                                     </tr>
-
-                                    @endforeach
-                            </table>
+                                @endforeach
+                            </tbody>
+                        </table>
 
                         </div>
                     </div>
@@ -75,20 +76,5 @@
             </div> <!-- ./ row-->
     </div><!-- ./container -->
         
-        <script>
-           /* $.('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-                radioClass: 'iradio_flat-green'
-            });
-            <!--checkall -->
-            // Remove the checked state from "All" if any checkbox is unchecked
-            $('#checkall').on('ifChecked', function(event){
-                $('input').iCheck('check');
-            });
-            $('#checkall').on('ifUnchecked', function(event){
-                $('input').iCheck('uncheck');
-            });
-*/
-        </script>
 
     @endsection

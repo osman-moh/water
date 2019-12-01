@@ -80,7 +80,7 @@
 
         <script>
             $(document).ready(function(){
-                var user_type = '{{ auth()->user()->type }}' ;
+                var user_type = '{{ auth()->user()->user_type_id }}' ;
                 
                 $('#reportsTable').DataTable({
                     processing: true,

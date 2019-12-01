@@ -34,7 +34,7 @@
            
             <div class="row" >
 
-                <table  class="table" >
+                <table  class="table table-bordered" id="squaresTable">
                     <thead>
                     <tr>
                         <th >الترقيم</th>
@@ -47,67 +47,72 @@
                     </tr>
                     </thead>
 
-                    @foreach($data as $key=>$value )
-                        <tr>
-                            <td>{{$value->id}}</td>
-                            <td>{{$value->name}}</td>
-                            <td>
-                                @isset($value['city']->name)
-                                    {{ $value['city']->name }}
-                                @endisset
-                            </td>
-                            <td>
-                                @isset($value['locality']->name)
-                                    {{ $value['locality']->name }}
-                                @endisset
-                            </td>
-                            <td>
-                                @isset($value['town']->name)
-                                    {{ $value['town']->name }}
-                                @endisset
-                            </td>
-                            
-                            <td>
-                                <a  class="btn btn-success" href="{{route('squares.edit',$value->id)}}">
-                                    تعديل
-                                </a>
-                            </td>
-                                <td>
-
-                                    <form  action="{{route('squares.destroy',$value->id)}}"method="POST">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                                        <button    type="submit" class="btn btn-danger">
-                                             <i class="fa fa-fw fa-remove"></i>
-                                        </button>
-                                    </form>
-
-
-
-
-                            </td>
-                        </tr>
-                    @endforeach
+                   
                 </table>
 
             </div>
         </div>
-        <div class="box-footer">
+      <!--  <div class="box-footer">
 
             {{$data->links()}}
 
 
-        </div>
+        </div>-->
     </div>
 @endsection
 
 @section('javascript')
 
-        <script>
+<script>
             $(document).ready(function(){
-               
-                $('.message').hide(4000);
+                var user_type = '{{ auth()->user()->type }}' ;
+                
+                $('#squaresTable').DataTable({
+                   // processing: true,
+                    serverSide: true,
+                    ajax: '{{ url('squares-all') }}',
+                    columns: [
+                            { data: 'id' , defaultContent : " 2" },
+                            { data: 'name' , defaultContent : " "} ,
+                            { data: 'city.name' , defaultContent : " " },                      
+                        
+                            { data: 'locality.name' , defaultContent : " " },                      
+                            { data: 'town.name' ,	defaultContent : " "	},
+                            { data: 'id',
+                                    render:function(data, type, row, meta){
+                                        var btn = '' ;
+                                        if(user_type == 3){
+                                            btn = ' ' ;
+                                        }else{
+                                            btn = '<a href="squares/'+row.id+'">عرض</a>';
+                                        }
+                                        return btn ;
+                                    }
+                            }
+                         
+                            
+                    ],
+                    "language":
+                    {
+                        "sProcessing": "جارٍ التحميل...",
+                        "sLengthMenu": "أظهر _MENU_ مدخلات",
+                        "sZeroRecords": "لم يعثر على أية سجلات",
+                        "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
+                        "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 سجل",
+                        "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+                        "sInfoPostFix": "",
+                        "sSearch": "ابحث:",
+                        "sUrl": "",
+                        "oPaginate": {
+                            "sFirst": "الأول",
+                            "sPrevious": "السابق",
+                            "sNext": "التالي",
+                            "sLast": "الأخير"
+                        }
+                    }
+                });
+                
+                //$('.message').hide(200);
 
             });
         </script>

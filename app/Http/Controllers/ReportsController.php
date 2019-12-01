@@ -42,7 +42,7 @@ class ReportsController extends Controller
     /** @test */
     public function getReports()
     {
-		if (Auth::user()->type === 2) {
+		if (Auth::user()->user_type_id === 2) {
             //$reports = Report::where('city_id', '=', Auth::user()->city_id)->get();
 			return DataTables::of(Report::where('city_id', '=', Auth::user()->city_id)->with(['locality', 'office' , 'status']))->make(true);
         } else {
@@ -130,7 +130,7 @@ class ReportsController extends Controller
         //
         // $report = Report::findOrFail($id);
         
-        if ($report->city_id != Auth::user()->city_id && Auth::user()->type != 1) {
+        if ($report->city_id != Auth::user()->city_id && Auth::user()->user_type_id != 1) {
             abort(403);
             
         }
