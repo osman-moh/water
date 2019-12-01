@@ -29,53 +29,159 @@ class WaterReportsController extends Controller
      */
     public function generateSumReport(Request $request)
     {
+        //return $request;
         //validate request
+        $request->validate([
+            'fDate' => 'required|date',
+            'tDate'   => 'required|date',
+            'summaryReport' => 'required|int',
+        ]);
+
+        if ($request->summaryReport == 2) {
+            $arrayOFLocalities = $this->generateOfficesSum($request);
+        } else {
+
+            //get the reports based on the selection parameters
+            $reports = Report::where([
+                ['date', '>=', $request->fDate],
+                ['date', '<=', $request->tDate],
+            ])->with(['locality',  'status', 'type'])->get();
+
+            $arrayOFLocalities = [];
+
+            foreach ($reports as $key => $report) {
+                if (!empty($arrayOFLocalities[$report->locality->name])) {
+
+                    //get old total
+                    $total = $arrayOFLocalities[$report->locality->name]['total'];
+
+                    //increment locality reports no.
+                    $arrayOFLocalities[$report->locality->name]['total'] =  ++$total;
+
+                    //check for solved reports
+                    if ($report->report_status_id == 2 && $report->report_type_id != 8) {
+
+                        //check for report type
+                        if (!empty($arrayOFLocalities[$report->locality->name]['fixed'][$report->type->name])) {
+                            //get old total
+                            $totalFixed = $arrayOFLocalities[$report->locality->name]['fixed'][$report->type->name];
+
+                            //increment solved reports no.
+                            $arrayOFLocalities[$report->locality->name]['fixed'][$report->type->name] =  ++$totalFixed;
+                        } else {
+                            //increment solved reports no.
+                            $arrayOFLocalities[$report->locality->name]['fixed'][$report->type->name] =  1;
+                        }
+                    } elseif ($report->report_status_id != 2 && $report->report_type_id != 8) {
+                        //check for report type
+                        if (!empty($arrayOFLocalities[$report->locality->name]['unfixed'][$report->type->name])) {
+                            //get old total
+                            $totalUnFixed = $arrayOFLocalities[$report->locality->name]['unfixed'][$report->type->name];
+
+                            //increment unsolved reports no.
+                            $arrayOFLocalities[$report->locality->name]['unfixed'][$report->type->name] =  ++$totalUnFixed;
+                        } else {
+                            //increment unsolved reports no.
+                            $arrayOFLocalities[$report->locality->name]['unfixed'][$report->type->name] =  1;
+                        }
+                    } else { }
+                } else {
+                    //set the localities array with a total of 1
+                    $arrayOFLocalities[$report->locality->name]['total'] = 1;
+
+                    if ($report->report_status_id == 2 && $report->type->name != 8) {
+                        //increment fixed reports no.
+                        $arrayOFLocalities[$report->locality->name]['fixed'][$report->type->name] =  1;
+                    } elseif ($report->report_status_id != 2 && $report->type->name != 8) {
+                        //increment unfixed reports no.
+                        $arrayOFLocalities[$report->locality->name]['unfixed'][$report->type->name] =  1;
+                    } else { }
+                }
+            }
+        }
+        if ($request->summaryReport == 1) {
+            $reportTitle = ' المحليات';
+        } else {
+            $reportTitle = ' المكاتب';
+        }
+        //return $arrayOFLocalities;
+        return view('water-reports.summary', [
+            'reports' => $arrayOFLocalities,
+            'reportTypes'   => ReportType::where('id', '!=', 8)->get(),
+            'fromDate'     => $request->fDate,
+            'toDate'       => $request->tDate,
+            'title'     =>  $reportTitle,
+        ]);
+    }
+
+    /** 
+     * Return summary report for offices
+     * 
+     * @param Request $request
+     * @return Response $response
+     */
+    private function generateOfficesSum(Request $request)
+    {
         //get the reports based on the selection parameters
-        $reports = Report::where([['date', '>=', $request->from_date], ['date', '<=', $request->to_date]])->get();
+        $reports = Report::where([
+            ['date', '>=', $request->fDate],
+            ['date', '<=', $request->tDate],
+        ])->with(['office', 'status', 'type'])->get();
 
-        // $reportsByLocality = $reports->countBy(function ($report) {
-        //     return $report->locality->name;
-        // });
+        $arrayOfOffices = [];
 
-        $reportsByLocalities = $reports->groupBy(function ($report) {
-            return $report->locality->name;
-        });
+        foreach ($reports as $key => $report) {
 
-        foreach ($reportsByLocalities as $key => $reportsByLocality) {
-            $result[$key]['type']  = $reportsByLocality->countBy(function ($report) {
-                return $report->type->name;
-            });
+            if (!empty($arrayOfOffices[$report->office->name])) {
 
-            $result[$key]['fixed-reports']      = $reportsByLocality->filter(function ($report) {
-                return $report->report_status_id == 2;
-            })->countBy(function ($report) {
-                return $report->type->name;
-            });
+                //get old total
+                $total = $arrayOfOffices[$report->office->name]['total'];
 
-            $result[$key]['pending-reports']      = $reportsByLocality->filter(function ($report) {
-                return $report->report_status_id == 3;
-            })->countBy(function ($report) {
-                return $report->type->name;
-            });
+                //increment office reports no.
+                $arrayOfOffices[$report->office->name]['total'] =  ++$total;
 
-            $result[$key]['recieved-reports']      = $reportsByLocality->filter(function ($report) {
-                return $report->report_status_id == 4;
-            })->countBy(function ($report) {
-                return $report->type->name;
-            });
+                //check for solved reports
+                if ($report->report_status_id == 2 && $report->report_type_id != 8) {
 
-            $result[$key]['unfixed-reports']      = $reportsByLocality->filter(function ($report) {
-                return $report->report_status_id == 1;
-            })->countBy(function ($report) {
-                return $report->type->name;
-            });
+                    //check for report type
+                    if (!empty($arrayOfOffices[$report->office->name]['fixed'][$report->type->name])) {
+                        //get old total
+                        $totalFixed = $arrayOfOffices[$report->office->name]['fixed'][$report->type->name];
 
-            $result[$key]['status']  = $reportsByLocality->countBy(function ($report) {
-                return $report->status->name;
-            });
+                        //increment solved reports no.
+                        $arrayOfOffices[$report->office->name]['fixed'][$report->type->name] =  ++$totalFixed;
+                    } else {
+                        //increment solved reports no.
+                        $arrayOfOffices[$report->office->name]['fixed'][$report->type->name] =  1;
+                    }
+                } elseif ($report->report_status_id != 2 && $report->report_type_id != 8) {
+                    //check for report type
+                    if (!empty($arrayOfOffices[$report->office->name]['unfixed'][$report->type->name])) {
+                        //get old total
+                        $totalUnFixed = $arrayOfOffices[$report->office->name]['unfixed'][$report->type->name];
+
+                        //increment unsolved reports no.
+                        $arrayOfOffices[$report->office->name]['unfixed'][$report->type->name] =  ++$totalUnFixed;
+                    } else {
+                        //increment unsolved reports no.
+                        $arrayOfOffices[$report->office->name]['unfixed'][$report->type->name] =  1;
+                    }
+                } else { }
+            } else {
+                //set the localities array with a total of 1
+                $arrayOfOffices[$report->office->name]['total'] = 1;
+
+                if ($report->report_status_id == 2 && $report->type->name != 8) {
+                    //increment fixed reports no.
+                    $arrayOfOffices[$report->office->name]['fixed'][$report->type->name] =  1;
+                } elseif ($report->report_status_id != 2 && $report->type->name != 8) {
+                    //increment unfixed reports no.
+                    $arrayOfOffices[$report->office->name]['unfixed'][$report->type->name] =  1;
+                } else { }
+            }
         }
 
-        return $result;
+        return  $arrayOfOffices;
     }
 
     /** 
@@ -125,6 +231,8 @@ class WaterReportsController extends Controller
         $reports = Report::where($parameters)->with([
             'locality', 'office', 'town', 'square', 'type', 'sub_type', 'status'
         ])->get();
+
+        //return $reports;
 
         return view('water-reports.show', [
             'reports'      => $reports,

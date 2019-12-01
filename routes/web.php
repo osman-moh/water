@@ -70,6 +70,8 @@ Route::prefix('water-reports')->name('water-reports.')->group(function () {
     Route::get('/create', 'WaterReportsController@create')->name('create');
 
     Route::post('/generate', 'WaterReportsController@generateReport')->name('generate');
+
+    Route::post('/summary', 'WaterReportsController@generateSumReport')->name('summary');
 });
 
 
@@ -87,8 +89,6 @@ Route::get('report-subtype-list/{id}', 'ReportTypeController@getReportSubType');
 Route::get('report-sub-detail-list/{id}', 'ReportSubDetailController@getReportSubDetail');
 
 Route::get('city-offices-list/{id}', 'UserController@getOffices');
-
-Route::get('summary-report-by', 'WaterReportsController@generateSumReport');
 
 // update Report status (sending SMS):
 
