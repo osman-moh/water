@@ -97,12 +97,12 @@
                             { data: 'status.name' , defaultContent : " "},
                             { data: 'id',
                                     render:function(data, type, row, meta){
-                                        var btn = '' ;
-                                        if(user_type == 3){
-                                            btn = ' ' ;
-                                        }else{
-                                            btn = '<a href="reports/'+row.id+'">عرض</a>';
-                                        }
+                                       // var btn = '' ;
+                                        //if(user_type !== 3){
+                                        //    btn = ' ' ;
+                                        //}else{
+                                        var    btn = '<a href="reports/'+row.id+'">عرض</a>';
+                                       // }
                                         return btn ;
                                     }
                             }
