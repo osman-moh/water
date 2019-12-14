@@ -10,8 +10,8 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="col-md-6"><h4>الفترة من </h4></div>
-                        <div class="col-md-6">
-                            <h5> {{ $fromDate }}</h5>
+                        <div class="col-md-6 date">
+                            <h5 id="from-date"> {{ $fromDate }}</h5>
                         </div>
                     </div>
                 </div>
@@ -20,8 +20,8 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="col-md-6"><h4>إلى</h4></div>
-                        <div class="col-md-6">
-                            <h5> {{ $toDate }}</h5>
+                        <div class="col-md-6 date">
+                            <h5 id="to-date"> {{ $toDate }}</h5>
                         </div>
                     </div>
                 </div>
@@ -32,15 +32,19 @@
                 <div class="box box-primary">
                     <div class="box-body">
                         <div class="col-md-6"><h4>ملخص البلاغات حسب :</h4></div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 report-type">
+                            <input type="hidden" name="report-type" id="report-type" value="{{ $reportType }}">
                             <h4> {{ $title }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <button class="btn btn-lg btn-primary downloadPdf">تحميل (PDF)</button>
+            </div>
         </div><!--- ./row --->
 
-
+        @if (count($reports) > 0)
         <div class="row">
             <div class="col-md-11">
                 <div class="box box-success">
@@ -66,8 +70,8 @@
                             <th>م عداد</th>
                             <th>تسريب</th>
                             <th>م تسريب</th>
-                            <th>نسبة الإنجاز</th>
-                            <th>عدم الإنجاز</th>
+                            {{-- <th>نسبة الإنجاز</th>
+                            <th>عدم الإنجاز</th> --}}
                         </thead>
                         <tbody>
                             @foreach ($reports as $key => $report)
@@ -108,12 +112,12 @@
                                         </td>
                                     @endforeach
 
-                                    <td>
+                                    {{-- <td>
                                         {{ round(($totalOfFixedReports / $report['total']) * 100 , 2) }}%
                                     </td>
                                     <td>
                                        {{ 100 - round(($totalOfFixedReports / $report['total']) * 100 , 2) }} 
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
@@ -122,44 +126,41 @@
             </div><!-- ./ box -->
             </div> <!-- /. col-md-11 -->   
         </div><!-- /.row -->
+        @else
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="box box-danger">
+                        <div class="box-body">
+                            <div class="col-md-4"><h4>لقد حدث خطأ !</h4></div>
+                            <div class="col-md-6">
+                                <h4> لم يتم انشاء التقرير بصورة صحيحة </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--- ./row --->
+        @endif
     
-        <div class="row">
-           
-        </div>
     </div>
 
     @endsection
 
     @section('javascript')
         <script>
-
             $(document).ready(function(){
-                $('#reportsTable').DataTable({
-                    "language":
-                    {
-                        "sProcessing": "جارٍ التحميل...",
-                        "sLengthMenu": "أظهر _MENU_ مدخلات",
-                        "sZeroRecords": "لم يعثر على أية سجلات",
-                        "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_ مدخل",
-                        "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 سجل",
-                        "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
-                        "sInfoPostFix": "",
-                        "sSearch": "ابحث:",
-                        "sUrl": "",
-                        "oPaginate": {
-                            "sFirst": "الأول",
-                            "sPrevious": "السابق",
-                            "sNext": "التالي",
-                            "sLast": "الأخير"
-                        }
-                    } ,
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'excel'
-                    ],
-                });
-            });
 
+                //$('#reportsTable').DataTable();
+
+                $('button.downloadPdf').click(function(){
+                    var reportType  = $('input#report-type').val() , fromDate = $('h5#from-date').text() , 
+                        toDate      = $('h5#to-date').text() ;
+                    console.log('values to be submitted ..',reportType,' & ',fromDate,' & ',toDate);
+
+                    window.open('/water-reports/summary?summaryReport='+reportType+'&fDate='+fromDate+'&tDate='+toDate , '_blank');
+
+                });
+
+            });
         </script>
 
     @endsection
