@@ -11,7 +11,10 @@
 |
 */
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+//use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -68,7 +71,9 @@ Route::prefix('water-reports')->name('water-reports.')->group(function () {
 
     Route::get('/', 'WaterReportsController@index')->name('index');
 
-    Route::get('/create', 'WaterReportsController@create')->name('create');
+    Route::get('/summary', 'WaterReportsController@generateSumReport')->name('summary');
+
+    Route::get('/generate', 'WaterReportsController@generateReport')->name('generate');
 
     Route::post('/generate', 'WaterReportsController@generateReport')->name('generate');
 

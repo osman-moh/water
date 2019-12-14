@@ -8,6 +8,8 @@ use App\ReportStatus;
 use App\ReportType;
 use Illuminate\Http\Request;
 
+use niklasravnsborg\LaravelPdf\Facades\Pdf;
+
 class WaterReportsController extends Controller
 {
     /** @test */
@@ -100,17 +102,38 @@ class WaterReportsController extends Controller
             }
         }
         if ($request->summaryReport == 1) {
-            $reportTitle = ' المحليات';
+            $reportTitle = 'المحلية';
+            $headerTitle = 'ملخص البلاغات حسب المحليات';
         } else {
-            $reportTitle = ' المكاتب';
+            $reportTitle = ' المكتب';
+            $headerTitle = 'ملخص البلاغات حسب المكاتب';
         }
         //return $arrayOFLocalities;
+
+        if ($request->isMethod('GET')) {
+            $data = [
+                'reports' => $arrayOFLocalities,
+                'reportTypes'   => ReportType::where('id', '!=', 8)->get(),
+                'fromDate'      => $request->fDate,
+                'toDate'        => $request->tDate,
+                'title'         =>  $reportTitle,
+                'headerTitle'    => $headerTitle,
+            ];
+
+            //$data = ['هذا تجريب للمكتبة'];
+
+            //return $data;
+            $pdf = Pdf::loadView('pdf-templates.summary', compact('data'));
+            return $pdf->stream('test.pdf');
+        }
+
         return view('water-reports.summary', [
-            'reports' => $arrayOFLocalities,
+            'reports'       => $arrayOFLocalities,
             'reportTypes'   => ReportType::where('id', '!=', 8)->get(),
-            'fromDate'     => $request->fDate,
-            'toDate'       => $request->tDate,
-            'title'     =>  $reportTitle,
+            'fromDate'      => $request->fDate,
+            'toDate'        => $request->tDate,
+            'title'         =>  $reportTitle,
+            'reportType'    => $request->summaryReport,
         ]);
     }
 
@@ -233,6 +256,21 @@ class WaterReportsController extends Controller
         ])->get();
 
         //return $reports;
+
+        if ($request->isMethod('GET')) {
+            $data = [
+                'reports'      => $reports,
+                'localityName' => $reportLocalityName,
+                'officeName'   => $reportOfficeName,
+                'typeName'     => $reportTypeName,
+                'statusName'   => $reportStatusName,
+                'fromDate'     => $request->fromDate,
+                'toDate'       => $request->toDate,
+            ];
+
+            $pdf = Pdf::loadView('pdf-templates.detail', compact('data'));
+            return $pdf->stream('البلاغات في الفترة من ' . $request->fromDate . ' إلى ' . $request->toDate . '.pdf');
+        }
 
         return view('water-reports.show', [
             'reports'      => $reports,

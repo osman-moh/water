@@ -11,7 +11,7 @@
                     <div class="box-body">
                         <div class="col-md-6"><h4>الفترة من </h4></div>
                         <div class="col-md-6">
-                            <h5> {{ $fromDate }}</h5>
+                            <h5 id="fDate"> {{ $fromDate }}</h5>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="box-body">
                         <div class="col-md-6"><h4>إلى</h4></div>
                         <div class="col-md-6">
-                            <h5> {{ $toDate }}</h5>
+                            <h5 id="tDate"> {{ $toDate }}</h5>
                         </div>
                     </div>
                 </div>
@@ -90,6 +90,9 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <button class="btn btn-lg btn-primary downloadPdf">تحميل (PDF)</button>
+            </div>
         </div><!--- ./row --->
 
         <div class="row">
@@ -140,6 +143,10 @@
         <div class="row">
            
         </div>
+        <input type="hidden" name="locality" value="{{ $localityName->id ?? 0 }}">
+        <input type="hidden" name="office" value="{{ $officeName->id ?? 0 }}">
+        <input type="hidden" name="reportType" value="{{ $typeName->id ?? 0 }}">
+        <input type="hidden" name="reportStatus" value="{{ $statusName->id ?? 0 }}">
     </div>
 
     @endsection
@@ -148,11 +155,17 @@
         <script>
 
             $(document).ready(function(){
-                $('#reportsTable').DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'copy', 'excel'
-                    ]
+                $('button.downloadPdf').click(function(){
+                    var locality  = $('input[name=locality]').val() , fromDate = $('h5#fDate').text() , 
+                        toDate      = $('h5#tDate').text()              , office  = $('input[name=office]').val() ,
+                        reportType  = $('input[name=reportType]').val() , reportStatus  = $('input[name=reportStatus]').val() ;
+                    
+                    var param = 'report_type='+reportType+'&fromDate='+fromDate+'&toDate='+toDate+'&report_status='+reportStatus+'&locality_id='+locality+'&office_id='+office ;
+                   
+                    console.log('values to be submitted ..',param);
+
+                    window.open('/water-reports/generate?'+param , '_blank');
+
                 });
             });
 
