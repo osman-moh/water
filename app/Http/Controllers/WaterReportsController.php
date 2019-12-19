@@ -83,18 +83,18 @@ class WaterReportsController extends Controller
     {
         //return $request ;
         //validate request parameters
-        // $request->validate([
-        //     'fromDate' => 'required|date',
-        //     'toDate'   => 'required|date',
-        //     'locality_id' => 'nullable|int',
-        //     'office_id'   => 'nullable|int',
-        //     'town_id'   => 'nullable|int',
-        //     'square_id'   => 'nullable|int',
-        //     'city_id'   => 'required|int',
-        //     'report_type' => 'nullable|int',
-        //     'report_status' => 'nullable|int',
-        //     'reportTotal'  => 'nullable|int',
-        // ]);
+        $request->validate([
+            'fromDate' => 'required|date',
+            'toDate'   => 'required|date',
+            'locality_id' => 'nullable|int',
+            'office_id'   => 'nullable|int',
+            'town_id'   => 'nullable|int',
+            'square_id'   => 'nullable|int',
+            'city_id'   => 'required|int',
+            'report_type' => 'nullable|int',
+            'report_status' => 'nullable|int',
+            'reportTotal'  => 'nullable|int',
+        ]);
 
         $parameters          = [];
         $reportLocalityName  = '';
@@ -107,28 +107,34 @@ class WaterReportsController extends Controller
 
         $relation = [] ;
         $object   = '' ;
+        $reportTitle = '' ;
 
 
         $parameters[]          = ['date', '>=', $request->fromDate];
         $parameters[]          = ['date', '<=', $request->toDate];
 
         if ($request->city_id >= 0) {
-
+            $reportTitle = 'المناطق' ;
             if($request->city_id > 0){
                 $parameters[]       = ['city_id', $request->city_id];
+                $reportCityName = City::findOrFail($request->city_id);
+                
+                $reportTitle = 'المنطقة' ;
             }
-            //$reportCityName = City::findOrFail($request->city_id);
-
+            
             $relation [] = 'city' ;
             $object   = 'city' ;
-
+            
         }
 
         if ($request->locality_id != null) {
+            $reportTitle = 'المحليات' ;
             if($request->locality_id > 0){
                 $parameters[]       = ['locality_id', $request->locality_id];
+                $reportLocalityName = Locality::findOrFail($request->locality_id);
+                
+                $reportTitle = 'المحلية' ;
             }
-            //$reportLocalityName = Locality::findOrFail($request->locality_id);
             
             $relation[] = 'locality' ;
             $object   = 'locality' ;
@@ -136,28 +142,38 @@ class WaterReportsController extends Controller
         }
 
         if ($request->office_id != null) {
+            $reportTitle = 'المكاتب' ;
             if($request->office_id > 0){
                 $parameters[]       = ['office_id', $request->office_id];
+                $reportOfficeName   = \App\Office::findOrFail($request->office_id);
+                $reportTitle = 'المكتب' ;
             }
-            //$reportOfficeName   = \App\Office::findOrFail($request->office_id);
+            
             $relation [] = 'office' ;
             $object   = 'office' ;
         }
 
         if ($request->town_id  != null) {
+            $reportTitle = 'المدن' ;
             if($request->town_id > 0){
                 $parameters[]       = ['town_id', $request->town_id];
+                $reportTownName   = \App\Town::findOrFail($request->town_id);
+                $reportTitle = 'المدينة' ;
             }
-            //$reportTownName   = \App\Town::findOrFail($request->town_id);
+            
             $relation[] = 'town' ;
             $object   = 'town' ;
         }
 
         if ($request->square_id != null) {
+            $reportTitle = 'المربعات' ;
             if($request->square_id > 0){
                 $parameters[]       = ['square_id', $request->square_id];
+                $reportSquareName   = \App\Square::findOrFail($request->square_id);
+                
+                $reportTitle = 'المربع' ;
             }
-            //$reportSquareName   = \App\Square::findOrFail($request->square_id);
+            
             $relation[] = 'square' ;
             $object   = 'square' ;
         }
@@ -171,44 +187,37 @@ class WaterReportsController extends Controller
             $reportStatusName   = ReportStatus::findOrFail($request->report_status);
         }
         
-
+        
         $relation[] = 'type' ;
         $relation[] = 'sub_type' ;
         $relation[] = 'status' ;
-        //detailed reports
+       
+        //detailed reports  
+        $reports = Report::where($parameters)->with($relation)->get();
         if($request->reportTotal == null){
-            //return [$relation , $object ];
-            $reports = Report::where($parameters)->with($relation)->get();
-
+            $reports  = $this->generateSum($reports , $object);
         }
-        //total Or sum reports
-        else{
-            $reports = Report::where($parameters)->with([
-                $relation, 'type', 'sub_type', 'status'
-            ])->count();
-        }
-        //return $reports ;
-        // $data = [
-        //         'reports'      => $reports,
-        //         'localityName' => $reportLocalityName,
-        //         'officeName'   => $reportOfficeName,
-        //         'cityName'   => $reportCityName,
-        //         'townName'   => $reportTownName,
-        //         'squareName'   => $reportSquareName,
-        //         'typeName'     => $reportTypeName,
-        //         'statusName'   => $reportStatusName,
-        //         'fromDate'     => $request->fromDate,
-        //         'toDate'       => $request->toDate,
-        //         'reportTotal'  =>  $request->reportTotal  ,
-        //     ];
-        //     //return $data ;
-        // $pdf = Pdf::loadView('pdf-templates.detail', compact('data'));
-        // return $pdf->download('البلاغات في الفترة من ' . $request->fromDate . ' إلى ' . $request->toDate . '.pdf');
         
-        $result = $this->generateSum($reports , $object);
-
-        //return [$request->all() , $reports] ;
-        return $result;
+        $data = [
+                'reports'      => $reports,
+                'localityName' => $reportLocalityName,
+                'officeName'   => $reportOfficeName,
+                'cityName'   => $reportCityName,
+                'townName'   => $reportTownName,
+                'squareName'   => $reportSquareName,
+                'typeName'     => $reportTypeName,
+                'statusName'   => $reportStatusName,
+                'fromDate'     => $request->fromDate,
+                'toDate'       => $request->toDate,
+                'reportTotal'  =>  $request->reportTotal  ,
+                'title'        => $reportTitle,
+                'reportTypes'   => ReportType:: all(),
+                'request'      => $request->all(),
+            ];
+        
+        $pdf = Pdf::loadView('pdf-templates.detail', compact('data'));
+        return $pdf->stream('البلاغات في الفترة من ' . $request->fromDate . ' إلى ' . $request->toDate . '.pdf');
+        
     }
 
     /**

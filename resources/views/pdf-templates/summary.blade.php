@@ -84,11 +84,15 @@
         </style>
     </head>
 <body>
- 
+    <header>
+        <img src="../public/img/logo.png" alt="">
+    </header>
     <div class="container">
-            
+        
         <div class=""><h3> <strong> ملخص البلاغات حسب : </strong> {{ $data['title'] }}</h3></div>
-
+            @php
+                $totalOfReports = 0 ;
+            @endphp
             <div class="col-md-6">
                 <h4> 
                     <strong>الفترة من  : </strong> 
@@ -130,6 +134,7 @@
 
                                     @php
                                         $totalOfFixedReports = 0 ;
+                                        $totalOfReports += $report['total'] ;
                                     @endphp
 
                                     @foreach ($data['reportTypes'] as $type)
@@ -166,6 +171,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <h4>عدد البلاغات : {{ $totalOfReports }} </h4>
                 </div>
             
     </div>

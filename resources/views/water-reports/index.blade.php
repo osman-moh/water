@@ -115,7 +115,7 @@
                                     <div class="col-md-1">
                                         <input type="checkbox" name="reportTotal" id="report-total" class="checkbox" value="1"> 
                                     </div>
-                                    <div class="col-md-2"><b> مجموع البلاغات </b></div>
+                                    <div class="col-md-2"><b> تقرير البلاغات بالتفصيل </b></div>
                                 </div>
                             </div><!--- ./row --->
                             <hr>
