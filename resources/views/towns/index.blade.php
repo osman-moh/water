@@ -84,38 +84,6 @@
                                         return btn ;
                                     }
                             }
-                         
-                            
-                    ],
-
-                    search: {
-                    "regex": true
-                },
-                dom: 'lBfrtip',
-                buttons: [
-                    {
-                        extend: 'copy',
-                        text: 'Copy to clipboard'
-                    },
-                    'excel',
-
-                    {
-                        extend: 'print',
-                        text: 'طباعة',
-                        autoPrint: true,
-                        exportOptions: {
-                            columns: ':visible'
-                        },
-                    },
-                    {
-                        extend: 'colvis',
-                        text: 'الأعمدة',
-                        autoPrint: true,
-                        exportOptions: {
-                            columns: ':visible'
-                        },
-                    }
-
 
                                ],
                     "language":

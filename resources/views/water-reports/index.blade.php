@@ -10,6 +10,14 @@
             </div>
         </div>
 
+        @if ($errors->any())
+            <div class="row">
+                <div class="col-md-11 alert alert-danger message">
+                    <h4><strong>خطأ !</strong> توجد حقول مطلوبة لم يتم اختيارها </h4>
+                </div>
+            </div>
+        @endif
+
         <div class="row"><br></div>
 
         <div class="row">
@@ -19,12 +27,15 @@
                         <div class="col-md-2">
                             <input type="radio" name="report-type" id="report-detail" class="radio" value="1">
                         </div>
-                        <div class="col-md-3"><label for="">تقرير تفصيلي</label></div>
+                        <div class="col-md-2"><label for="">تقرير تفصيلي</label></div>
                         
                         <div class="col-md-2">
                             <input type="radio" name="report-type" id="report-summary" class="radio" value="2" checked>
                         </div>
-                        <div class="col-md-3"><label for="">ملخص البلاغات</label></div>
+                        <div class="col-md-2"><label for="">ملخص البلاغات</label></div>
+
+                        <div class="col-md-4"></div>
+
                     </div>
                 </div> 
             </div>
@@ -47,12 +58,12 @@
                                 <div class="col-md-12">
                                     <div class="col-md-2"><h4>الفترة من </h4></div>
                                     <div class="col-md-3">
-                                        <input type="date" name="fDate" id="" class="form-control">
+                                        <input type="date" name="fDate" id="f" class="form-control">
                                     </div>
 
                                     <div class="col-md-1"><h4>إلى</h4></div>
                                     <div class="col-md-3">
-                                        <input type="date" name="tDate" id="" class="form-control">
+                                        <input type="date" name="tDate" id="t" class="form-control">
                                     </div>
                                     <div class="col-md-2"></div>
                                 </div>
@@ -70,7 +81,7 @@
                                         <input type="radio" name="summaryReport" id="sum-report-office" class="radio" value="2">
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-primary" type="submit" id="generate-summary"> إنشاء التقرير</button>
+                                        <button class="btn btn-primary" type="submit" id="generate-summary"> عرض التقرير</button>
                                     </div>
                                 </div>    
                             </div>
@@ -100,19 +111,32 @@
                                     <div class="col-md-3">
                                         <input type="date" name="toDate" id="toDate" class="form-control">
                                     </div>
-                                    <div class="col-md-2"></div>
+                                    
+                                    <div class="col-md-1">
+                                        <input type="checkbox" name="reportTotal" id="report-total" class="checkbox" value="1"> 
+                                    </div>
+                                    <div class="col-md-2"><b> مجموع البلاغات </b></div>
                                 </div>
                             </div><!--- ./row --->
                             <hr>
                         
                             <div class="row">
                                 <div class="col-md-2">
+                                    <label for="">المنطقة الكبرى</label>
+                                    <select name="city_id" class="form-control" id="city_id">
+                                        <option></option>
+                                        <option value="0">كل المناطق</option>
+                                        <option></option>
+                                        @foreach ($cities as $city)
+                                            <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2">
                                     <label for="">المحلية</label>
                                     <select name="locality_id" class="form-control" id="locality_id">
-                                        <option value=""></option>
-                                        @foreach ($localities as $locality)
-                                            <option value="{{ $locality->id }}">{{ $locality->name }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
 
@@ -122,6 +146,20 @@
                                     </select>
                                 </div>
                             
+                                <div class="col-md-2">
+                                    <label for="">المدينة / الحي</label>
+                                    <select name="town_id" class="form-control" id="town_id">
+                                    </select>
+                                </div>
+                            </div><!-- ./row -->
+                            <div class="row"><br></div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="">المربع</label>
+                                    <select name="square_id" class="form-control" id="square_id">
+                                    </select>
+                                </div>
+
                                 <div class="col-md-2">
                                     <label for="">نوع البلاغ</label>
                                     <select name="report_type" id="report_type" class="form-control">
@@ -140,8 +178,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2"><br><button class="btn btn-primary">عرض التقرير</button></div>
-                            </div>
+                                <div class="col-md-2"><br><button class="btn btn-primary btn-block">عرض التقرير</button></div>
+                            </div><!-- ./row -->
                         </form>
                     </div>
                 </div>
@@ -159,17 +197,18 @@
 
             $(document).ready(function(){
 
+                $('.message').fadeOut(5000);
+
                 $('div.detail-report').hide();
                 
-
                 var from_date , to_date , summary_report ;
 
                 $('input[type=radio][name=report-type').change(function(){
-                    console.log($(this).val(),' is checked') ;
+                    //console.log($(this).val(),' is checked') ;
 
                     var checkedOption  = $(this).val() ;
 
-                    if(checkedOption == 1){
+                    if(checkedOption == 1 ){
                         $('div.detail-report').show();
                         $('div.summaryReport').hide();
                     }else{
@@ -193,10 +232,10 @@
                             beforeSend:function(){},
                             complete:function(){},
                             success:function(data){
-                                console.log('success ', data);
+                                //console.log('success ', data);
                             },
                             error:function(error){
-                                console.log('error ',error);
+                                //console.log('error ',error);
                             }
                         });
                     }
@@ -206,22 +245,84 @@
                     }
                 });
 
-                $("#locality_id").change(
-                function () {
-                    
-                    var id = $(this).val();
-                    $.get('/locality-offices-list/'+id,
-                        function(data){
-                            var options = '<option></option>' ;
-                            $.each(data , function (key , value) {
-                                options += '<option value='+value.id+'>'+value.name+'</option>';
+                $("#city_id").change(
+                    function () {
+                        //reset selects
+                        $('#locality_id , #office_id , #town_id , #square_id').html('<option></option>');
+                        
+                        var id = $(this).val();
+
+                        $.get('/city-localities-list/'+id,
+                            function(data){
+                                var options = '<option></option>'
+                                                +'<option value="0">كل المحليات</option>'
+                                                +'<option></option>' ;
+                                $.each(data , function (key , value) {
+                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                                });
+                                $('#locality_id').html(options);
                             });
-                            $('#office_id').html(options);
-                        });
+                        
+                    }
+                );
 
-                }
-            );
+                $("#locality_id").change(
+                    function () {
+                        //reset selects
+                        $('#office_id , #town_id , #square_id').html('<option></option>');
+                        
+                        var id = $(this).val();
 
+                        $.get('/locality-offices-list/'+id,
+                            function(data){
+                                var options = '<option></option>'
+                                                +'<option value="0">كل المكاتب</option>'
+                                                +'<option></option>' ;
+                                $.each(data , function (key , value) {
+                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                                });
+                                $('#office_id').html(options);
+                            });
+                        
+                    }
+                );
+
+                $("#office_id").change(
+                    function () {
+                        $('#town_id , #square_id').val('');
+                        var id = $(this).val();
+                        $.getJSON('/office-towns-list/'+id,
+                            function(data){
+                                var options = '<option></option>'
+                                                +'<option value="0">كل المدن</option>'
+                                                +'<option></option>' ;
+                                $.each(data.towns , function (key , value) {
+                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                                });
+                                $('#town_id').html(options);
+                            });
+
+                    }
+                );
+
+                $("#town_id").change(
+                    function () {
+                        $('#square_id').html('<option></option>');
+                        var id = $(this).val();
+                        $.get('/town-squares-list/'+id,
+                            function(data){
+                                var squares = data.squares ;
+                                var options = '<option></option>'
+                                                +'<option value="0">كل المربعات</option>'
+                                                +'<option></option>' ;
+                                $.each(squares , function (key , value) {
+                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                                });
+                                $('#square_id').html(options);
+                            });
+
+                    }
+                );
 
             });
 

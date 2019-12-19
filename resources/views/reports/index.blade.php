@@ -32,7 +32,7 @@
             <!-- /.box-header -->
             
             <div class="box-body">
-			@if (auth()->user()->type !== 2)
+			@if (auth()->user()->user_type_id !== 2)
                 <div class="row">
                     <div class="col-lg-4">
                         <a href="{{route('reports.create')}}"  class="btn btn-primary" ><i class="fa fa-fw fa-plus-square"></i>

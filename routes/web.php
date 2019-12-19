@@ -82,7 +82,7 @@ Route::prefix('water-reports')->name('water-reports.')->group(function () {
 
 
 //Ajax requests
-Route::get('city-localities-list/{id}', 'citiesController@getLocalities');
+Route::get('city-localities-list/{id}', 'CitiesController@getLocalities');
 
 Route::get('locality-offices-list/{id}', 'LocalitiesController@getOffices');
 

@@ -8,11 +8,12 @@
             هيئة مياه ولاية الخرطوم
         </div>
         <div class="text-center h3" >
-        ادارة الخدمات اللوجستية
+        مركز خالد علي خالد
         </div>
-        <div class="text-center h3" >
-            قسم الطوارئ
+        <div class="text-center h2" >
+            للبلاغات
         </div>
+      
 
         <div class="row"><br><br></div>
 

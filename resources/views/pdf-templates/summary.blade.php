@@ -101,10 +101,10 @@
                     <table id="t01">
                         <thead>
                             <tr>
-                            <td>#</td>
+                            <!-- <td>#</td> -->
                             <td>{{ $data['title'] }}</td>
                             <td>العدد </td>
-                            <td>عطش</td>
+                            <td> غ عطش </td>
                             <td>م عطش</td>
                             <td>كسر</td>
                             <td>م كسر</td>
@@ -116,13 +116,15 @@
                             <td>م عداد</td>
                             <td>تسريب</td>
                             <td>م تسريب</td>
-                           
+                            <td>غ أخرى</td>
+                            <td>م أخرى</td>
+                            <td>نسبة الإنجاز</td>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach ($data['reports'] as $key => $report)
                                 <tr>
-                                    <td>{{ $loop->index + 1 }}</td>
+                                    <!-- <td>{{ $loop->index + 1 }}</td> -->
                                     <td>{{ $key }}</td>
                                     <td>{{ $report['total'] }}</td>
 
@@ -157,7 +159,9 @@
                                             {{ $sumOfFixed }}
                                         </td>
                                     @endforeach
-
+                                    <td>
+                                        {{ round(($totalOfFixedReports / $report['total']) * 100 , 2) }}%
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

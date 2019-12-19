@@ -326,6 +326,9 @@
                                         <div class="col-md-3"> 
                                             <button type="submit" class="btn btn-success btn-block">تعديل الحالة</button>
                                         </div>
+                                        <div class="col-md-3">
+                                            <a href="/reports/{{ $report->id }}/edit" class="btn btn-primary btn-block">تعديل البلاغ</a>
+                                        </div>
                                     <!-- </div><hr> -->
                                     <hr>
                                 </form>
@@ -338,9 +341,7 @@
                                     <div class="row">
                                         <div class="col-md-12"><br><br></div>
                                         <div class="col-md-2"></div>
-                                        <div class="col-md-3">
-                                            <a href="/reports/{{ $report->id }}/edit" class="btn btn-primary btn-block">تعديل البلاغ</a>
-                                        </div>
+                                        
                                         
                                         <div class="col-md-3">
                                             <button class="btn btn-danger btn-block" type="submit">حذف البلاغ</button>

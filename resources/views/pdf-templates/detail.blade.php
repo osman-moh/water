@@ -6,7 +6,7 @@
 
         <title>تقرير تفصيلي عن البلاغات</title>
 
-        <!-- Fonts -->
+        <!-- Fonts --
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
@@ -81,30 +81,71 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            @page {
+                header: page-header;
+                
+            }
         </style>
     </head>
 <body>
- 
+    <header>
+        <img src="../public/img/logo.png" alt="">
+    </header>
+
     <div class="container">
-        <h4><strong>المحلية : </strong> {{ $data['localityName']->name }}</h4>
-        <h4><strong>المكتب :</strong> {{ $data['officeName']->name ?? 'كل المكاتب' }} </h4>
-        <h4><strong>نوع البلاغ :</strong>{{ $data['typeName']->name ?? 'كل أنواع البلاغات' }}</h4>
-        <h4><strong>حالة البلاغ :</strong>{{ $data['statusName']->name ?? 'كل حالات البلاغات' }}</h4>
-        <h4> <strong>الفترة من  : </strong> {{ $data['fromDate'] }}  
+       
+        <h4>{{ (!$data['reportTotal']) ? 'تقرير تفصيلي للبلاغات' : 'تقرير تجميعي للبلاغات' }}
+            
+            || <strong>الفترة من  : </strong> {{ $data['fromDate'] }}  
             <strong>إلى :</strong> {{  $data['toDate'] }}
         </h4>
-          
-                <div class="" >
-                    <table id="t01">
-                        <thead>
-                            <tr>
-                                <td>#</td>
-                                <td>رقم البلاغ</td>
-                                <td>الإسم</td>
-                                <td>الحي</td>
-                                <td>المربع</td>
-                                <td>رقم المنزل</td>
-                                <td>التاريخ</td>
+        
+        <h4> المنطقة :  {{ $data['cityName']->name }}  
+            @isset($data['localityName']->name) 
+                || المحلية : {{ $data['localityName']->name }}
+            @endisset
+
+            @isset($data['typeName']->name) 
+                || نوع البلاغ : {{ $data['typeName']->name }}
+            @endisset
+
+            @isset($data['statusName']->name) 
+                || حالة البلاغ : {{ $data['statusName']->name }}
+            @endisset
+        </h4>
+
+        <h4>
+            @isset($data['officeName']->name) 
+                 المكتب : {{ $data['officeName']->name }}
+            @endisset
+
+            @isset($data['townName']->name) 
+                || المدينة : {{ $data['townName']->name }}
+            @endisset
+
+            @isset($data['squareName']->name) 
+                || المربع : {{ $data['squareName']->name }}
+            @endisset
+        </h4>
+
+        @if($data['reportTotal'] != null)
+            <h3> عدد البلاغات : {{ $data['reports'] }} </h3>
+        @endif
+
+        <div>
+
+            @if($data['reportTotal'] == null)
+
+            <table id="t01">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>رقم البلاغ</td>
+                        <td>الإسم</td>
+                        <td>الحي</td>
+                        <td>المربع</td>
+                        <td>رقم المنزل</td>
+                        <td>التاريخ</td>
                                 <td>الزمن</td>
                                 <td>نوع البلاغ</td>
                                 <td>التصنيف</td>
@@ -128,8 +169,10 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>
-                </div>
+            </table>
+        @endif
+
+    </div>
             
     </div>
    

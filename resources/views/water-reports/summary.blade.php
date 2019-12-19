@@ -55,7 +55,7 @@
                 <div class="box-body table-responsive">
                     <table class="table table-hover" id="reportsTable">
                         <thead>
-                            <th>#</th>
+                            <!-- <th>#</th> -->
                             <th>{{ $title }}</th>
                             <th>العدد الكلي</th>
                             <th>عطش</th>
@@ -70,13 +70,15 @@
                             <th>م عداد</th>
                             <th>تسريب</th>
                             <th>م تسريب</th>
-                            {{-- <th>نسبة الإنجاز</th>
-                            <th>عدم الإنجاز</th> --}}
+                            <th>غ أخرى</th>
+                            <th>م أخرى</th>
+                             <th>نسبة الإنجاز</th>
+                             {{--<th>عدم الإنجاز</th> --}}
                         </thead>
                         <tbody>
                             @foreach ($reports as $key => $report)
                                 <tr>
-                                    <td>{{ $loop->index + 1 }}</td>
+                                    <!-- <td>{{ $loop->index + 1 }}</td> -->
                                     <td>{{ $key }}</td>
                                     <td>{{ $report['total'] }}</td>
 
@@ -112,10 +114,10 @@
                                         </td>
                                     @endforeach
 
-                                    {{-- <td>
+                                    <td>
                                         {{ round(($totalOfFixedReports / $report['total']) * 100 , 2) }}%
                                     </td>
-                                    <td>
+                                    {{--<td>
                                        {{ 100 - round(($totalOfFixedReports / $report['total']) * 100 , 2) }} 
                                     </td> --}}
                                 </tr>

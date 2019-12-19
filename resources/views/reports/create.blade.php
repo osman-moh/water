@@ -192,11 +192,12 @@
 								   oninvalid="this.setCustomValidity('عفوا ! الرجاء اختر تفاصيل نوع البلاغ  ')"
 								   oninput="this.setCustomValidity('')"></select>
                     </div>
+                   
                     <div class="col-md-6">
                         <label for=""> وصف ما تم عمله في البلاغ	</label>
-                        <textarea name="report_action_description" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب"></textarea>
+                        <textarea name="report_action_description" contenteditable="true" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب"></textarea>
                     </div>
-
+                  
                 </div>
                 <hr>
                 <div class="row">

@@ -9,7 +9,11 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+        <body>
+        <header>
+        <img src="../public/img/logo.png" alt="">
+    </header>
+    </body>
         <!-- Styles -->
         <style>
             html, body {
@@ -65,20 +69,39 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
+    <div class="flex-center position-ref full-height" style="
+    background: radial-gradient(#153ba7, #71414100);
+">
                 <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">تسجيل دخول</a>
-                        <!--a href="{{ route('register') }}">Register</a-->
-                    @endauth
-                </div>
-            @endif
+                                            <a href="http://localhost:8000/login" style="
+    color: #4aad38;
+    font-weight: bold;
+    height: 29px;
+    
+">
+<button type="button" color:="" #8f9fea;="" font-weight:="" bold;="" height:="" 29px;="" style="
+    background: #8f9fea;
+    width: 215px;
+    height: 55px;
+    font-weight: -14px;
+    /* font-style: oblique; */
+    /* font: icon; */
+    color: snow;
+    font-size: -webkit-xxx-large;
+">تسجيل دخول</button>
 
+
+        
+    
+</a>
+                        <!--a href="http://localhost:8000/register">Register</a-->
+                                    </div>
+            
             <div class="content">
-                <div class="title m-b-md">
+                <div class="title m-b-md" style="
+    color: azure;
+    font-weight: bold;
+">
                     هيئة ميــاه ولايـــة الخرطوم
                 </div>
 
