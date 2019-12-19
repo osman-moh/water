@@ -8,7 +8,6 @@ use App\Report;
 use App\ReportStatus;
 use App\ReportType;
 use Illuminate\Http\Request;
-
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
 
 class WaterReportsController extends Controller
@@ -40,7 +39,6 @@ class WaterReportsController extends Controller
         ]);
 
         $object = 'locality' ;
-
         if ($request->summaryReport == 2) {
             $object = 'office' ;
         } 
