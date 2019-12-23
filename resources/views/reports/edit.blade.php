@@ -208,11 +208,11 @@
                        
 
                         <div class="col-md-6">
-                        <label for=""> وصف ما تم عمله في البلاغ	</label>
-                                <textarea name="report_action_description" id="" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب">
-                                    {{ $report->report_action_description }}
-                                </textarea>
-                            </div>
+                            <label for=""> وصف ما تم عمله في البلاغ	</label>
+                            <textarea name="report_action_description" id="work-been-done" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب">
+                                {{ $report->report_action_description }}
+                            </textarea>
+                        </div>
 
                         <hr>
                         <div class="row">
@@ -221,8 +221,8 @@
                             </div>
                         </div>
                         <hr>
-        
-        
+
+                        <input type="hidden" name="user-type" value="{{ Auth()->user()->user_type_id }}" id="type-id">
         
                     </form>
         
@@ -237,192 +237,138 @@
                 
                 $(document).ready(function(){
 
-                    /*$("#city_id").change(
-						function () {
-							$('#reporting_status').hide();
-							//$('#reporting_status').html('');
-							$('#submit-report').prop('disabled' , false);
-							$('#locality_id , #office_id , #town_id , #square_id , #house_number').val(' ');
-							var id = $(this).val();
-							$.get('/city-localities-list/'+id,
-								function(data){
-									var options = '<option></option>' ;
-									$.each(data , function (key , value) {
-										options += '<option value='+value.id+'>'+value.name+'</option>';
-									});
-									$('#locality_id').html(options);
-								});
-							
-						}
-					);
+                    var typeId = $('input#type-id').val();
 
-                $("#locality_id").change(
-                    function () {
-                        $('#reporting_status').hide();
-                        //$('#reporting_status').html('');
-                        $('#submit-report').prop('disabled' , false);
-                        $('#office_id , #town_id , #square_id , #house_number').val(' ');
-                        var id = $(this).val();
-                        $.get('/locality-offices-list/'+id,
-                            function(data){
-                                var options = '<option></option>' ;
-                                $.each(data , function (key , value) {
-                                    options += '<option value='+value.id+'>'+value.name+'</option>';
-                                });
-                                $('#office_id').html(options);
-                            });
-
+                    if(typeId == 2){
+                        $('input,select,textarea').prop('readonly' , true);
+                        $('select').prop('disabled' , true);
+                        $('textarea#work-been-done').prop('readonly' , false);
                     }
-                );
 
-                $("#office_id").change(
-                    function () {
-                        $('#reporting_status').hide();
-                        //$('#reporting_status').html('');
-                        $('#submit-report').prop('disabled' , false);
-                        $('#town_id , #square_id , #house_number').val(' ');
-                        var id = $(this).val();
-                        $.getJSON('/office-towns-list/'+id,
-                            function(data){
-                                //console.log(data);
-                                //set manager name&phone
-                                var name = data.manager_name, phone = data.manager_phone ;
-                                $('#manager_name').val(name) ;
-                                $('#manager_phone').val(phone);
-                                var options = '<option></option>' ;
-                                $.each(data.towns , function (key , value) {
-                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                    $("#town_id").change(
+                        function () {
+                            $('#reporting_status').hide();
+                            //$('#reporting_status').html('');
+                            $('#submit-report').prop('disabled' , false);
+                            $('#square_id , #house_number').val(' ');
+                            var id = $(this).val();
+                            $.get('/town-squares-list/'+id,
+                                function(data){
+                                    
+                                    var city = data.city , 
+                                        locality = data.locality , 
+                                        office = data.office , 
+                                        squares = data.squares ;
+
+                                    var name = data.manager_name, phone = data.manager_phone ;
+                                        $('#manager_name').val(name) ;
+                                        $('#manager_phone').val(phone);
+                                    
+                                    var options = '<option></option>' ;
+                                    $.each(squares , function (key , value) {
+                                        options += '<option value='+value.id+'>'+value.name+'</option>';
+                                    });
+                                    $('#square_id').html(options);
+
+                                    var city_option = '<option value="'+city.id+'">'+city.name+'</option>' ;
+                                    var loc_option = '<option value="'+locality.id+'">'+locality.name+'</option>' ;
+                                    var off_option = '<option value="'+office.id+'">'+office.name+'</option>' ;
+
+                                    $('#office_id').html(off_option).attr('readonly' , true);
+                                    $('#locality_id').html(loc_option).attr('readonly' , true);
+                                    $('#city_id').html(city_option).attr('readonly' , true);
+
                                 });
-                                $('#town_id').html(options);
-                            });
 
-                    }
-                );
-				*/
-                $("#town_id").change(
-					function () {
-						$('#reporting_status').hide();
-						//$('#reporting_status').html('');
-						$('#submit-report').prop('disabled' , false);
-						$('#square_id , #house_number').val(' ');
-						var id = $(this).val();
-						$.get('/town-squares-list/'+id,
-							function(data){
-								
-								var city = data.city , 
-									locality = data.locality , 
-									office = data.office , 
-									squares = data.squares ;
+                        }
+                    ); 
 
-								var name = data.manager_name, phone = data.manager_phone ;
-									$('#manager_name').val(name) ;
-									$('#manager_phone').val(phone);
-								
-								var options = '<option></option>' ;
-								$.each(squares , function (key , value) {
-									options += '<option value='+value.id+'>'+value.name+'</option>';
-								});
-								$('#square_id').html(options);
-
-								var city_option = '<option value="'+city.id+'">'+city.name+'</option>' ;
-								var loc_option = '<option value="'+locality.id+'">'+locality.name+'</option>' ;
-								var off_option = '<option value="'+office.id+'">'+office.name+'</option>' ;
-
-								$('#office_id').html(off_option).attr('readonly' , true);
-								$('#locality_id').html(loc_option).attr('readonly' , true);
-								$('#city_id').html(city_option).attr('readonly' , true);
-
-							});
-
-					}
-				); 
-
-                $("#report_type").change(
-                    function () {
-						$('#report_sub_type,#report_detail').val('');
-                        $('#reporting_status').hide();
-                        //$('#reporting_status').html('');
-                        $('#submit-report').prop('disabled' , false);
-                        var id = $(this).val();
-                        $.get('/report-subtype-list/'+id,
-                            function(data){
-                                var options = '<option></option>' ;
-                                $.each(data , function (key , value) {
-                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                    $("#report_type").change(
+                        function () {
+                            $('#report_sub_type,#report_detail').val('');
+                            $('#reporting_status').hide();
+                            //$('#reporting_status').html('');
+                            $('#submit-report').prop('disabled' , false);
+                            var id = $(this).val();
+                            $.get('/report-subtype-list/'+id,
+                                function(data){
+                                    var options = '<option></option>' ;
+                                    $.each(data , function (key , value) {
+                                        options += '<option value='+value.id+'>'+value.name+'</option>';
+                                    });
+                                    $('#report_sub_type').html(options);
                                 });
-                                $('#report_sub_type').html(options);
-                            });
 
-                    }
-                );
+                        }
+                    );
 
-                $("#report_sub_type").change(
-                    function () {
-						$('#report_detail').val('');
-                        $('#reporting_status').hide();
-                        //$('#reporting_status').html('');
-                        $('#submit-report').prop('disabled' , false);
-                        var id = $(this).val();
-                        $.get('/report-sub-detail-list/'+id,
-                            function(data){
-                                var options = '<option></option>' ;
-                                $.each(data , function (key , value) {
-                                    options += '<option value='+value.id+'>'+value.name+'</option>';
+                    $("#report_sub_type").change(
+                        function () {
+                            $('#report_detail').val('');
+                            $('#reporting_status').hide();
+                            //$('#reporting_status').html('');
+                            $('#submit-report').prop('disabled' , false);
+                            var id = $(this).val();
+                            $.get('/report-sub-detail-list/'+id,
+                                function(data){
+                                    var options = '<option></option>' ;
+                                    $.each(data , function (key , value) {
+                                        options += '<option value='+value.id+'>'+value.name+'</option>';
+                                    });
+                                    $('#report_detail').html(options);
                                 });
-                                $('#report_detail').html(options);
-                            });
 
-                    }
-                );
+                        }
+                    );
 
-                $('#report_status').html('');
-                /*
-                $("#house_number_stopped").keyup(function () {
-
-                        var id = $(this).val() , office_id = $('#office_id').val() ,
-                        town_id = $('#town_id').val() , square_id = $('#square_id').val();
+                    $('#report_status').html('');
                     
-                        var data = {
-                                    _token : $('input[name=_token]').val() ,
-                                    house_id : id , 
-                                    square_id : square_id , 
-                                    town_id : town_id , 
-                                    office_id
-                        } ;
+                    {{-- $("#house_number_stopped").keyup(function () {
+
+                            var id = $(this).val() , office_id = $('#office_id').val() ,
+                            town_id = $('#town_id').val() , square_id = $('#square_id').val();
                         
-                        if(id > 0 && square_id > 0 && town_id > 0 && office_id > 0){
-                            $.ajax({
-                                type:'get' ,
-                                url : '/check-house-number' ,
-                                dataType:'json' ,
-                                data    : data ,
-                                success:function(data){
-                                
-                                    if(data.report_id){
-                                        var link = 'يوجد بلاغ مسجل بنفس رقم المنزل';
-                                        alert(link);
-                                        $('#reporting_status').show();
-                                        $('#reporting_name').html('<h5><strong>اسم المبلغ</strong> : '+data.reporter_name+'</h5>');
-                                        $('#reporting_phone').html('<h5><strong> رقم الهاتف</strong> : '+data.reporter_phone+'</h5>');
-                                        $('#reporting_date').html('<h5><strong>تاريخ البلاغ</strong> : '+data.report_date.date+'</h5>');
-                                        $('#reporting_id').html('<h5><strong>رقم البلاغ</strong> :'+data.report_id+'</h5>');
-                                        //disable submit button
-                                        $('#submit-report').prop('disabled' , true);
-                                    }else{
+                            var data = {
+                                        _token : $('input[name=_token]').val() ,
+                                        house_id : id , 
+                                        square_id : square_id , 
+                                        town_id : town_id , 
+                                        office_id
+                            } ;
+                            
+                            if(id > 0 && square_id > 0 && town_id > 0 && office_id > 0){
+                                $.ajax({
+                                    type:'get' ,
+                                    url : '/check-house-number' ,
+                                    dataType:'json' ,
+                                    data    : data ,
+                                    success:function(data){
+                                    
+                                        if(data.report_id){
+                                            var link = 'يوجد بلاغ مسجل بنفس رقم المنزل';
+                                            alert(link);
+                                            $('#reporting_status').show();
+                                            $('#reporting_name').html('<h5><strong>اسم المبلغ</strong> : '+data.reporter_name+'</h5>');
+                                            $('#reporting_phone').html('<h5><strong> رقم الهاتف</strong> : '+data.reporter_phone+'</h5>');
+                                            $('#reporting_date').html('<h5><strong>تاريخ البلاغ</strong> : '+data.report_date.date+'</h5>');
+                                            $('#reporting_id').html('<h5><strong>رقم البلاغ</strong> :'+data.report_id+'</h5>');
+                                            //disable submit button
+                                            $('#submit-report').prop('disabled' , true);
+                                        }else{
+                                            $('#reporting_status').hide();
+                                            //$('#reporting_status').html('');
+                                            $('#submit-report').prop('disabled' , false);
+                                        }
+                                    } ,
+                                    error:function(error){
                                         $('#reporting_status').hide();
                                         //$('#reporting_status').html('');
                                         $('#submit-report').prop('disabled' , false);
                                     }
-                                } ,
-                                error:function(error){
-                                    $('#reporting_status').hide();
-                                    //$('#reporting_status').html('');
-                                    $('#submit-report').prop('disabled' , false);
-                                }
-                            });
-                        }
-                    });
-                    */
+                                });
+                            }
+                        }); --}}
+                    
                 });
         
           </script>
