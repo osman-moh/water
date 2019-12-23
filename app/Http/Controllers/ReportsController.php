@@ -40,16 +40,15 @@ class ReportsController extends Controller
     }
 
     /** @test */
-    public function getReports()
+ public function getReports()
     {
-	/*	if (Auth::user()->user_type_id === 2||Auth::user()->user_type_id === 3) {
+		if (Auth::user()->user_type_id === 2) {
             //$reports = Report::where('city_id', '=', Auth::user()->city_id)->get();
 			return DataTables::of(Report::where('city_id', '=', Auth::user()->city_id)->with(['locality', 'office' , 'status']))->make(true);
-        } else {*/
+        } else {
             //$reports = Report::all();
             return DataTables::of(Report::query()->with(['locality', 'office' , 'status']))->make(true);
-       // }
-        
+        }        
     }
 
     /**
