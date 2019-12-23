@@ -182,6 +182,14 @@ class ReportsController extends Controller
         // return $request->all();
         $data               = Report::find($id);
         // return $data;
+        if (Auth()->user()->user_type_id == 2) {
+            $data->report_action_description         = isset($request->report_action_description) ?
+                $request->report_action_description :
+                $data->report_action_description;
+            $data->save();
+            $request->session()->flash('status', 'تم التعديل بنجاح!');
+            return redirect()->to(route('reports.index'));
+        }
         $data->location_id     = isset($request->location) ? $request->location : $data->location;
         $data->date         = isset($request->date) ? $request->date : $data->date;
         $data->phone1       = isset($request->phone1) ? $request->phone1 : $data->phone1;
