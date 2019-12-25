@@ -258,11 +258,16 @@ class ReportsController extends Controller
     }
 
     /** @test */
-    public function updateStatus($id)
+    public function updateStatus(Request $request, $id)
     {
+        $request->validate([
+            'report_status' => 'required|int',
+        ]);
+
         $report = Report::findOrFail($id);
 
-        $report->report_status_id = request('report_status');
+        $report->report_status_id = $request->report_status;
+        $report->report_action_description = empty($request->report_action_description) ? '' : $request->report_action_description;
         $report->save();
         $message = 'تم تعديل حالة البلاغ بنجاح';
         $delivered = '';

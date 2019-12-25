@@ -310,26 +310,36 @@
                                     @method('PATCH')
                                     @csrf
                                     
-                                    <!-- <div class="row"> -->
-                                        <div class="col-md-2">
-                                            <input type="radio" name="report_status" value="1" {{ ($report->report_status == 1)? 'checked' :''}}>&nbsp;&nbsp; غير منجز
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-2">
+                                                <input type="radio" name="report_status" value="1" {{ ($report->report_status_id == 1)? 'checked' :''}}>&nbsp;&nbsp; غير منجز
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="radio" name="report_status" value="2" {{ ($report->report_status_id == 2)? 'checked' :''}}>&nbsp;&nbsp;منجز
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="radio" name="report_status" value="3" {{ ($report->report_status_id == 3)? 'checked' :''}}>&nbsp;&nbsp;معلق
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="radio" name="report_status" value="4" {{ ($report->report_status_id == 4)? 'checked' :''}}>&nbsp;&nbsp;قيد التنفيذ
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for=""> وصف ما تم عمله في البلاغ	</label>
+                                                <textarea name="report_action_description" contenteditable="true" cols="30" rows="2" class="form-control" placeholder="يملاء بواسطة مدير المكتب"></textarea>
+                                            </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" name="report_status" value="2" {{ ($report->report_status == 2)? 'checked' :''}}>&nbsp;&nbsp;منجز
+                                        
+                                        <div class="col-md-12"><br>
+                                            <div class="col-md-3">
+                                                <a href="/reports/{{ $report->id }}/edit" class="btn btn-primary btn-block">تعديل بيانات البلاغ</a>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-3"> 
+                                                <button type="submit" class="btn btn-success btn-block">تعديل الحالة</button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" name="report_status" value="3" {{ ($report->report_status == 3)? 'checked' :''}}>&nbsp;&nbsp;معلق
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" name="report_status" value="4" {{ ($report->report_status == 4)? 'checked' :''}}>&nbsp;&nbsp;قيد التنفيذ
-                                        </div>
-                                        <div class="col-md-3"> 
-                                            <button type="submit" class="btn btn-success btn-block">تعديل الحالة</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <a href="/reports/{{ $report->id }}/edit" class="btn btn-primary btn-block">تعديل البلاغ</a>
-                                        </div>
-                                    <!-- </div><hr> -->
+                                    </div><hr>
                                     <hr>
                                 </form>
                             @endif
