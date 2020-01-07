@@ -32,9 +32,12 @@
                 </div>
             </div>
            
-            <div class="row" >
+            <div class="container">
+                        <div class="row">
+                            <div class="col-md-11 table-responsive">
+                                <table class="table hover table-hover table-bordered" id="squaresTable">
 
-                <table  class="table table-bordered" id="squaresTable">
+                
                     <thead>
                     <tr>
                         <th >الترقيم</th>
@@ -42,8 +45,8 @@
                         <th>المنطقة الكبري </th>
                         <th>المحلية  </th>
                         <th>المدينة  </th>
-                       
-                        <th colspan="2"> الاجراء     </th>
+                        <th> الاجراء     </th>
+                        
                     </tr>
                     </thead>
 
@@ -62,23 +65,22 @@
 @endsection
 
 @section('javascript')
-
-<script>
+        <script>
             $(document).ready(function(){
-                var user_type = '{{ auth()->user()->type }}' ;
+                var user_type = '{{ auth()->user()->user_type_id }}' ;
                 
                 $('#squaresTable').DataTable({
-                   // processing: true,
+                    processing: true,
                     serverSide: true,
                     ajax: '{{ url('squares-all') }}',
-                    columns: [
-                            { data: 'id' , defaultContent : " 2" },
+
+                            columns: [
+                            { data: 'id'  },
                             { data: 'name' , defaultContent : " "} ,
-                            { data: 'city.name' , defaultContent : " " },                      
-                        
-                            { data: 'locality.name' , defaultContent : " " },                      
-                            { data: 'town.name' ,	defaultContent : " "	},
-                            { data: 'id',
+							{ data: 'city.name' , defaultContent : " "} ,
+                            { data: 'locality.name' , defaultContent : " "},
+                            { data: 'town.name' ,	defaultContent : " "	},    
+                         { data: 'id',
                                     render:function(data, type, row, meta){
                                         var btn = '' ;
                                         if(user_type == 3){
@@ -89,9 +91,7 @@
                                         return btn ;
                                     }
                             }
-                         
-                            
-                    ],
+                               ],
                     "language":
                     {
                         "sProcessing": "جارٍ التحميل...",
@@ -112,7 +112,7 @@
                     }
                 });
                 
-                //$('.message').hide(200);
+                $('.message').hide(8000);
 
             });
         </script>

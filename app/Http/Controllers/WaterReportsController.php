@@ -232,6 +232,7 @@ class WaterReportsController extends Controller
     private function generateSum($reports , $object){
 
         $arrayOfReports = [];
+        
 
         for ($i = 0 ; $i < $reports->count() ; $i++) {
 
